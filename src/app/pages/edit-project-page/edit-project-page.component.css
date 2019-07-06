@@ -1,5 +1,5 @@
-#description {
-  background: #d8f175;
+#information {
+  background: #194ec5;
 }
 
 #employee-list {
@@ -8,6 +8,10 @@
 
 #project-manager {
   margin-top: 50px;
+}
+
+#team-select {
+  margin-top: 30px;
 }
 
 #risks-list {
@@ -20,8 +24,16 @@
 
 
 #description-text {
-  height: 40rem;
+  height: 30rem;
   width: 15rem;
   background: none;
   font-size: 20px;
 }
+
+#project-name {
+  padding-top: 30px;
+}
+
+input {
+    text-emphasis-color: black;
+  }

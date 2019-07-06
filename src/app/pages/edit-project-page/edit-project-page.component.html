@@ -4,18 +4,23 @@
 </div>
 <br/><br/>
 <mat-grid-list cols="8" rowHeight="20rem" [gutterSize]="'15px'">
-    <mat-grid-tile colspan="2" rowspan="1.5" id="description">
-      <mat-grid-tile-header>Description</mat-grid-tile-header>
-      <div class="gridBody">
+    <!-- <form [formGroup]="generalInfo"> -->
+    <mat-grid-tile colspan="2" rowspan="1.5" id="information">
+      <mat-form-field id="project-name">
+            <input matInput placeholder="Name of Project" type="text" formControlName="projectName" required
+              class="form-control">
+          </mat-form-field>
+      <mat-grid-tile-header>Name and Description</mat-grid-tile-header>
+      <div class="gridBody">Description
       <textarea id="description-text"></textarea>
+      <!-- </form> -->
     </div>
     </mat-grid-tile>
   
     <mat-grid-tile id="employee-list" colspan="2" rowspan="1.5">
-      <mat-grid-tile-header>Employees on this project</mat-grid-tile-header>
+      <mat-grid-tile-header>Team Memberst</mat-grid-tile-header>
       <div id="project-manager">Project Manager <br/>
-      <mat-select>
-          
+      <mat-select id="team-select">
         <mat-option *ngFor="let employee of employeesList" [value]=employee>{{ employee }}</mat-option>
       </mat-select>
     </div>
@@ -28,7 +33,7 @@
   
   
     <mat-grid-tile id="risks-list" colspan="2" rowspan="1.5">
-      <mat-grid-tile-header>Project Risks</mat-grid-tile-header>
+      <mat-grid-tile-header>Risks</mat-grid-tile-header>
       <br/><br/>
       <button mat-raised-button color="accent" (click)="addRisk()">Add New Risk</button>
 
@@ -48,7 +53,7 @@
   
     
     <mat-grid-tile id="requirements-list" colspan="2" rowspan="1.5">
-      <mat-grid-tile-header>Project Requirements</mat-grid-tile-header>
+      <mat-grid-tile-header>Requirements</mat-grid-tile-header>
       <br/><br/>
       <button mat-raised-button color="accent" (click)="addRequirement()">Add New Requirement</button>
       <mat-selection-list>

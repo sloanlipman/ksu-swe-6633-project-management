@@ -3,16 +3,18 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AppMaterialModule } from 'src/app/app-material.module';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ManageEmployeesPage } from './manage-employees-page.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ManageEmployeesPage, AddEmployeeDialog } from './manage-employees-page.component';
 
 @NgModule({
   declarations: [
-    ManageEmployeesPage
+    ManageEmployeesPage,
+    AddEmployeeDialog
   ],
   imports: [
     AppMaterialModule,
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild([
       {
@@ -24,6 +26,7 @@ import { ManageEmployeesPage } from './manage-employees-page.component';
   exports: [
     ManageEmployeesPage
   ],
+  entryComponents: [AddEmployeeDialog],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ManageEmployeesPageModule{}

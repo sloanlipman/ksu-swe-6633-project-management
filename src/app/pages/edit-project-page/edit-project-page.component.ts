@@ -140,7 +140,8 @@ export class EditProjectPage extends AppComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       // Push result to an array containing requirements so that it will populate on the UI
-    });  }
+    });
+  }
 
   editRisk() {
 

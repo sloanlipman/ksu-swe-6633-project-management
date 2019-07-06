@@ -1,7 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { AppComponent } from 'src/app/app.component';
 import PouchDB from 'pouchdb';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
+export interface EmployeeDataDialog {
+  name: string;
+}
+
+@Component({
+  selector: 'add-employee',
+  templateUrl: 'add-employee.html',
+})
+export class AddEmployeeDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<AddEmployeeDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: AddEmployeeDialog) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
 
 @Component({
   selector: 'manage-employees-page',
@@ -11,7 +30,9 @@ import PouchDB from 'pouchdb';
 export class ManageEmployeesPage extends AppComponent implements OnInit {
   employees: any;
   employeesList = [];
-  constructor() {
+  constructor(
+    public dialog: MatDialog
+  ) {
     super();
     this.employees = new PouchDB('employees');
   }
@@ -59,6 +80,19 @@ export class ManageEmployeesPage extends AppComponent implements OnInit {
     // }
 
     console.log(this.employeesList);
+  }
+
+  addEmployee() {
+    const dialogRef = this.dialog.open(AddEmployeeDialog, {
+      width: '450px',
+      data: {
+        name: undefined,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Push result to an array containing employee so that it will populate on the UI
+    });
   }
 
 }
