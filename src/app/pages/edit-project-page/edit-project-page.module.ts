@@ -3,16 +3,19 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AppMaterialModule } from 'src/app/app-material.module';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { EditProjectPage } from './edit-project-page.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { EditProjectPage, AddRiskDialog, AddRequirementDialog } from './edit-project-page.component';
 
 @NgModule({
   declarations: [
-    EditProjectPage
+    EditProjectPage,
+    AddRiskDialog,
+    AddRequirementDialog
   ],
   imports: [
     AppMaterialModule,
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild([
       {
@@ -23,6 +26,10 @@ import { EditProjectPage } from './edit-project-page.component';
   ],
   exports: [
     EditProjectPage
+  ],
+  entryComponents: [
+    AddRiskDialog,
+    AddRequirementDialog
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

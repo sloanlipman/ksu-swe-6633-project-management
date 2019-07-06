@@ -3,16 +3,18 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AppMaterialModule } from 'src/app/app-material.module';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { CreateTasksPage } from './create-tasks-page.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { CreateTasksPage, AddTaskDialog } from './create-tasks-page.component';
 
 @NgModule({
   declarations: [
-    CreateTasksPage
+    AddTaskDialog,
+    CreateTasksPage,
   ],
   imports: [
     AppMaterialModule,
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild([
       {
@@ -23,6 +25,9 @@ import { CreateTasksPage } from './create-tasks-page.component';
   ],
   exports: [
     CreateTasksPage
+  ],
+  entryComponents: [
+    AddTaskDialog
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

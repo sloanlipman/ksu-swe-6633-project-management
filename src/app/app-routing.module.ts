@@ -24,16 +24,6 @@ const routes: Routes = [
     loadChildren: './pages/manage-employees-page/manage-employees-page.module#ManageEmployeesPageModule'
   },
 
-  {
-    path: 'view-project', // TODO add /:id
-    loadChildren: './pages/view-project-page/view-project-page.module#ViewProjectPageModule'
-  },
-
-  {
-    path: 'trends', // TODO add /:id
-    loadChildren: './pages/view-trends-page/view-trends-page.module#ViewTrendsPageModule'
-  }
-
 ];
 
 @NgModule({

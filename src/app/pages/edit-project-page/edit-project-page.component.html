@@ -1,5 +1,9 @@
-
-<mat-grid-list cols="8" rowHeight="22rem" [gutterSize]="'15px'">
+<div class="button">
+    <!-- <button mat-raised-button class="cancel" *ngIf="isExistingUser()" (click)="goBack()">Cancel</button> -->
+    <button mat-raised-button color="primary">Submit Changes</button>
+</div>
+<br/><br/>
+<mat-grid-list cols="8" rowHeight="20rem" [gutterSize]="'15px'">
     <mat-grid-tile colspan="2" rowspan="1.5" id="description">
       <mat-grid-tile-header>Description</mat-grid-tile-header>
       <div class="gridBody">
@@ -26,7 +30,7 @@
     <mat-grid-tile id="risks-list" colspan="2" rowspan="1.5">
       <mat-grid-tile-header>Project Risks</mat-grid-tile-header>
       <br/><br/>
-      <button mat-raised-button color="accent">Add New Risk</button>
+      <button mat-raised-button color="accent" (click)="addRisk()">Add New Risk</button>
 
       <mat-selection-list>
         <!-- <mat-list-option>Risk 1</mat-list-option>
@@ -46,7 +50,7 @@
     <mat-grid-tile id="requirements-list" colspan="2" rowspan="1.5">
       <mat-grid-tile-header>Project Requirements</mat-grid-tile-header>
       <br/><br/>
-      <button mat-raised-button color="accent">Add New Requirement</button>
+      <button mat-raised-button color="accent" (click)="addRequirement()">Add New Requirement</button>
       <mat-selection-list>
       <!-- <mat-selection-list #timeSelectionList [compareWith]="compare" [formControl]="timeBoxes"> -->
           <!-- <mat-list-option *ngFor="let time of allTimes" [value]="time">
@@ -57,7 +61,3 @@
     <mat-grid-tile colspan="2" rowspan="0.5"></mat-grid-tile>
   </mat-grid-list>
    
-  <div class="button">
-    <!-- <button mat-raised-button class="cancel" *ngIf="isExistingUser()" (click)="goBack()">Cancel</button> -->
-    <button mat-raised-button color="primary">Submit Changes</button>
-  </div>
