@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditProjectPageComponent } from './edit-project-page.component';
+import { EditProjectPage } from './edit-project-page.component';
 
-describe('EditProjectPageComponent', () => {
-  let component: EditProjectPageComponent;
-  let fixture: ComponentFixture<EditProjectPageComponent>;
+describe('EditProjectPage', () => {
+  let component: EditProjectPage;
+  let fixture: ComponentFixture<EditProjectPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditProjectPageComponent ]
+      declarations: [ EditProjectPage ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditProjectPageComponent);
+    fixture = TestBed.createComponent(EditProjectPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

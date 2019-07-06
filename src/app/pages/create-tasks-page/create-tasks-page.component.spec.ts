@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateTasksPageComponent } from './create-tasks-page.component';
+import { CreateTasksPage } from './create-tasks-page.component';
 
-describe('CreateTasksPageComponent', () => {
-  let component: CreateTasksPageComponent;
-  let fixture: ComponentFixture<CreateTasksPageComponent>;
+describe('CreateTasksPage', () => {
+  let component: CreateTasksPage;
+  let fixture: ComponentFixture<CreateTasksPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateTasksPageComponent ]
+      declarations: [ CreateTasksPage ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateTasksPageComponent);
+    fixture = TestBed.createComponent(CreateTasksPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

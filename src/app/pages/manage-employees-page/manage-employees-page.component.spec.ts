@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManageEmployeesPageComponent } from './manage-employees-page.component';
+import { ManageEmployeesPage } from './manage-employees-page.component';
 
 describe('ManageEmployeesPageComponent', () => {
-  let component: ManageEmployeesPageComponent;
-  let fixture: ComponentFixture<ManageEmployeesPageComponent>;
+  let component: ManageEmployeesPage;
+  let fixture: ComponentFixture<ManageEmployeesPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ManageEmployeesPageComponent ]
+      declarations: [ ManageEmployeesPage ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ManageEmployeesPageComponent);
+    fixture = TestBed.createComponent(ManageEmployeesPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

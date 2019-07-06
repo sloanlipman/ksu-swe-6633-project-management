@@ -2,36 +2,38 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-  // These are here from my old project. I have them as an example for quick reference on how to set up routing.
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
 
-  // {
-  //   path: 'edit-profile',
-  //   loadChildren: './pages/edit-profile-page/edit-profile-page.module#EditProfilePageModule'
-  // },
-  // {
-  //   path: 'home',
-  //   loadChildren: './pages/home-page/home-page.module#HomePageModule'
-  // },
-  // {
-  //   path: 'landing-page',
-  //   loadChildren: './pages/landing-page/landing-page.module#LandingPageModule'
-  // },
-  // {
-  //   path: 'login',
-  //   loadChildren: './pages/login-page/login-page.module#LoginPageModule'
-  // },
-  // {
-  //   path: 'matchmaking',
-  //   loadChildren: './pages/matchmake-view-page/matchmake-view-page.module#MatchmakeViewPageModule'
-  // },
-  // {
-  //   path: 'register',
-  //   loadChildren: './pages/register-page/register-page.module#RegisterPageModule'
-  // },
-  // {
-  //   path: 'view-profile/:id',
-  //   loadChildren: './pages/view-profile-page/view-profile-page.module#ViewProfilePageModule'
-  // }
+  {
+    path: 'tasks',
+    loadChildren: './pages/create-tasks-page/create-tasks-page.module#CreateTasksPageModule'
+  },
+
+  {
+    path: 'edit',
+    loadChildren: './pages/edit-project-page/edit-projects-page.module#EditProjectsPageModule'
+  },
+
+  {
+    path: 'home',
+    loadChildren: './pages/home-page/home-page.module#HomePageModule'
+  },
+
+  {
+    path: 'manage-employees',
+    loadChildren: './pages/manage-employees-page/manage-employees-page.module#ManageEmployeesPageModule'
+  },
+
+  {
+    path: 'view-project',
+    loadChildren: './pages/view-project-page/view-project-page.module#ViewProjectPageModule'
+  },
+
+  {
+    path: 'trends',
+    loadChildren: './pages/view-trends-page/view-trends-page.module#ViewTrendsPageModule'
+  }
+
 ];
 
 @NgModule({
