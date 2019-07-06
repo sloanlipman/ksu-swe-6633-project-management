@@ -1,3 +1,20 @@
-<p>
-  manage-employees-page works!
-</p>
+<mat-grid-list cols="6" rowHeight="25rem"  [gutterSize]="'15px'">
+    <mat-grid-tile class="dummy" colspan="1" rowspan="1.5"></mat-grid-tile>
+  <mat-grid-tile colspan="4" rowspan="1.5">
+    <mat-grid-tile-header>Employees</mat-grid-tile-header> <!--Use *ngFor to show lists of projects, dynamically put their names in-->
+    <div class="gridBody">
+      <!-- use *ngFor to get list of employees-->
+    </div>
+       <mat-list>
+         <mat-list-item *ngFor="let employee of employeesList"> {{ employee }}</mat-list-item>
+         <!-- <mat-list-item>Selina Kyle</mat-list-item>
+         <mat-list-item>Allfred Pennyworth</mat-list-item>
+         <mat-list-item>Bruce Wayne</mat-list-item>
+         <mat-list-item>Lucius Fox</mat-list-item>
+         <mat-list-item>Jim Gordon</mat-list-item>
+         <mat-list-item>Tim Drake</mat-list-item> -->
+         <button>Add New Employee</button>
+       </mat-list>
+   </mat-grid-tile>
+    <mat-grid-tile class="dummy" colspan="1" rowspan="1.5"></mat-grid-tile>
+</mat-grid-list>

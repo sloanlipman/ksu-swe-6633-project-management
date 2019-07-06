@@ -8,7 +8,7 @@ import { HomePage } from './home-page.component';
 
 @NgModule({
   declarations: [
-    HomePage
+    HomePage,
   ],
   imports: [
     AppMaterialModule,

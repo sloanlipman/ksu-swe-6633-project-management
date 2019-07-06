@@ -1,3 +1,54 @@
-<p>
-  home-page works!
-</p>
+<mat-form-field>
+  <mat-select>
+    <mat-label>Ongoing Projects</mat-label>
+  <!-- Use *ngFor to assign these
+    <mat-option *ngFor="let project of projects" [value] = project>
+      {{project}}
+    </mat-option>
+  
+  -->
+  <mat-option value="abc">Project ABC</mat-option>
+  <mat-option value="123">Project 123</mat-option>
+  <mat-option value="drm">Project Do Re Mi</mat-option>
+</mat-select>
+
+</mat-form-field>
+<button mat-raised-button color="primary">Edit Project</button>
+<button mat-raised-button color="warn">Update Project</button>
+
+<mat-grid-list cols="6" rowHeight="25rem"  [gutterSize]="'15px'">
+    <mat-grid-tile class="dummy" colspan="1" rowspan="1.5"></mat-grid-tile>
+  <mat-grid-tile colspan="4" rowspan="1.5">
+    <mat-grid-tile-header>Project ABC</mat-grid-tile-header> <!--Use *ngFor to show lists of projects, dynamically put their names in-->
+    <div class="gridBody">
+      <div> Manager: Alfred Pennyworth</div>
+      <div> Current Phase: Requirements Analysis</div>
+      <div>Total estimated time: 6 months</div>
+      <div>Time remaining: 5.9 months</div>
+      <div>Team Members: Selina Kyle, Lucius Fox, Jim Gordon</div>
+    </div>
+    <!-- <form>
+        <mat-form-field id="firstName">
+          <input matInput placeholder="First Name" type="text" formControlName="firstName" required
+            class="form-control" [ngClass]=" { 'is-invalid': submitted && f.firstName.errors}" >
+        </mat-form-field>
+        <mat-form-field id="lastName">
+          <input matInput placeholder="Last Name" type="text" formControlName="lastName" required
+            class="form-control" [ngClass]=" { 'is-invalid': submitted && f.lastName.errors}" >
+        </mat-form-field>
+        <mat-form-field id="age">
+          <input matInput placeholder="Age" type="text" formControlName="age" required
+          class="form-control" [ngClass]=" { 'is-invalid': submitted && f.age.errors}" >
+        </mat-form-field>
+        <mat-form-field id="zip">
+          <input matInput placeholder="ZIP Code" type="text" formControlName="zip" required
+          class="form-control" [ngClass]=" { 'is-invalid': submitted && f.zip.errors}">
+        </mat-form-field>
+        <mat-form-field id="email">
+          <input matInput placeholder="E-mail Address" type="text" formControlName="email" required
+          class="form-control" [ngClass]=" { 'is-invalid': submitted && f.email.errors}">
+        </mat-form-field>
+    </form>    -->
+   </mat-grid-tile>
+    <mat-grid-tile class="dummy" colspan="1" rowspan="1.5"></mat-grid-tile>
+</mat-grid-list>

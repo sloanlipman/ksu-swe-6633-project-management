@@ -1,0 +1,30 @@
+#description {
+  background: #d8f175;
+}
+
+#employee-list {
+  background: #e0992f;
+}
+
+#project-manager {
+  margin-top: 50px;
+}
+
+#risks-list {
+  background: purple;
+}
+
+#requirements-list {
+  background: #3e3c3c
+}
+
+.button{
+  padding-left: 50px;
+}
+
+#description-text {
+  height: 40rem;
+  width: 30rem;
+  background: none;
+  font-size: 20px;
+}

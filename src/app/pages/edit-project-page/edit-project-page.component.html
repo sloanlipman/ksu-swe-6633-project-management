@@ -1,3 +1,63 @@
-<p>
-  edit-project-page works!
-</p>
+
+<mat-grid-list cols="8" rowHeight="22rem" [gutterSize]="'15px'">
+    <mat-grid-tile colspan="2" rowspan="1.5" id="description">
+      <mat-grid-tile-header>Description</mat-grid-tile-header>
+      <div class="gridBody">
+      <textarea id="description-text"></textarea>
+    </div>
+    </mat-grid-tile>
+  
+    <mat-grid-tile id="employee-list" colspan="2" rowspan="1.5">
+      <mat-grid-tile-header>Employees on this project</mat-grid-tile-header>
+      <div id="project-manager">Project Manager <br/>
+      <mat-select>
+          
+        <mat-option *ngFor="let employee of employeesList" [value]=employee>{{ employee }}</mat-option>
+      </mat-select>
+    </div>
+        <mat-selection-list [compareWith]="compare" [formControl]="employeesList">
+            <mat-list-option *ngFor="let employee of employeesList" [value]="employee">
+              {{ employee }}
+            </mat-list-option>
+          </mat-selection-list>
+    </mat-grid-tile>
+  
+  
+    <mat-grid-tile id="risks-list" colspan="2" rowspan="1.5">
+      <mat-grid-tile-header>Project Risks</mat-grid-tile-header>
+      <br/><br/>
+      <button mat-raised-button color="accent">Add New Risk</button>
+
+      <mat-selection-list>
+        <!-- <mat-list-option>Risk 1</mat-list-option>
+        <mat-list-option>Risk 2</mat-list-option>
+        <mat-list-option>Risk 3</mat-list-option>
+        <mat-list-option>Other (please specify)</mat-list-option>
+        <mat-form-field id="other">
+            <input matInput placeholder="Other Risk" type="textarea" formControlName="otherRisk"
+            class="form-control" > -->
+            <!-- [ngClass]=" { 'is-invalid': submitted && f.age.errors}"  -->
+          <!-- </mat-form-field>         -->
+        </mat-selection-list>
+    </mat-grid-tile> 
+  
+  
+    
+    <mat-grid-tile id="requirements-list" colspan="2" rowspan="1.5">
+      <mat-grid-tile-header>Project Requirements</mat-grid-tile-header>
+      <br/><br/>
+      <button mat-raised-button color="accent">Add New Requirement</button>
+      <mat-selection-list>
+      <!-- <mat-selection-list #timeSelectionList [compareWith]="compare" [formControl]="timeBoxes"> -->
+          <!-- <mat-list-option *ngFor="let time of allTimes" [value]="time">
+            {{time}}
+          </mat-list-option> -->
+        </mat-selection-list>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2" rowspan="0.5"></mat-grid-tile>
+  </mat-grid-list>
+   
+  <div class="button">
+    <!-- <button mat-raised-button class="cancel" *ngIf="isExistingUser()" (click)="goBack()">Cancel</button> -->
+    <button mat-raised-button color="primary">Submit Changes</button>
+  </div>

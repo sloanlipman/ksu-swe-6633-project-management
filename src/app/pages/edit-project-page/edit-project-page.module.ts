@@ -26,4 +26,4 @@ import { EditProjectPage } from './edit-project-page.component';
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class EditPrrojectsPageModule{}
+export class EditProjectPageModule{}

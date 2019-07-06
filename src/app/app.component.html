@@ -1,5 +1,13 @@
 <!--The content below is only a placeholder and can be replaced.-->
-
+<mat-toolbar>
+  <mat-toolbar-row> 
+    <!-- <button mat-flat-button class="header-button" disableRipple></button> TODO put project name here -->
+    <button mat-flat-button id="homeButton" class="header-button">Home</button>
+    <button mat-flat-button id="employeeButton" class="header-button">Manage Employees</button>
+    <button mat-flat-button id="createProjectButton" class="header-button">Create a Project</button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<br>
 
 <!--Anything above the router-outlet will be displayed DIRECTLY above the page content-->
 <router-outlet></router-outlet>

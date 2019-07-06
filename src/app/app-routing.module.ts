@@ -5,13 +5,13 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 
   {
-    path: 'tasks',
+    path: 'tasks', // TODO add /:id
     loadChildren: './pages/create-tasks-page/create-tasks-page.module#CreateTasksPageModule'
   },
 
   {
-    path: 'edit',
-    loadChildren: './pages/edit-project-page/edit-projects-page.module#EditProjectsPageModule'
+    path: 'edit', // TODO add /:id
+    loadChildren: './pages/edit-project-page/edit-project-page.module#EditProjectPageModule'
   },
 
   {
@@ -20,17 +20,17 @@ const routes: Routes = [
   },
 
   {
-    path: 'manage-employees',
+    path: 'employees',
     loadChildren: './pages/manage-employees-page/manage-employees-page.module#ManageEmployeesPageModule'
   },
 
   {
-    path: 'view-project',
+    path: 'view-project', // TODO add /:id
     loadChildren: './pages/view-project-page/view-project-page.module#ViewProjectPageModule'
   },
 
   {
-    path: 'trends',
+    path: 'trends', // TODO add /:id
     loadChildren: './pages/view-trends-page/view-trends-page.module#ViewTrendsPageModule'
   }
 
