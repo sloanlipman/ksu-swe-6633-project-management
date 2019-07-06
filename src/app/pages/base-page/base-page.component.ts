@@ -3,7 +3,7 @@ import PouchDB from 'pouchdb';
 
 
 @Component({
-  selector: 'app-base-page',
+  selector: 'base-page',
   templateUrl: './base-page.component.html',
   styleUrls: ['./base-page.component.css']
 })

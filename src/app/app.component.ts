@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   // projects: any;
   // employees: any;
 
-  // ngOnInit() {
+  ngOnInit() {
   //   this.projects = new PouchDB('projects');
   //   this.employees = new PouchDB('employees');
   //   this.addEmployee();
@@ -140,7 +140,7 @@ export class AppComponent implements OnInit {
     // });
 
 
-  // }
+  }
 
   // getEmployeeCount() {
   //   return new Promise((resolve) => {
