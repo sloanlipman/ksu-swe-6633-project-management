@@ -4,10 +4,12 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppMaterialModule } from './app-material.module';
 import { AppRoutingModule } from './app-routing.module';
+import { BasePage } from './pages/base-page/base-page.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BasePage
   ],
   imports: [
     AppMaterialModule,
