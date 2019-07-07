@@ -9,12 +9,17 @@ export interface TaskData {
   loggedTime: number;
   remainingTime: number;
   assignedTo: string;
-  isCompleted: boolean;
+  areRequirementsCompleted: boolean;
+  isDesigningCompleted: boolean;
+  isCodingCompleted: boolean;
+  isTestingCompleted: boolean;
+  isTaskCompleted: boolean;
 }
 
 @Component({
   selector: 'add-task',
-  templateUrl: 'add-task.html'
+  templateUrl: 'add-task.html',
+  styleUrls: ['./create-tasks-page.component.css']
 })
 export class AddTaskDialog {
 
@@ -44,7 +49,7 @@ export class CreateTasksPage implements OnInit {
 
   addTask() {
     const dialogRef = this.dialog.open(AddTaskDialog, {
-      width: '450px',
+      width: '600px',
       data: {
         name: undefined,
         description: undefined,
@@ -53,7 +58,11 @@ export class CreateTasksPage implements OnInit {
         loggedTime: undefined,
         remainingTime: 0,
         assignedTo: undefined,
-        isCompleted: false
+        areRequirementsCompleted: false,
+        isDesigningCompleted: false,
+        isCodingCompleted: false,
+        isTestingCompleted: false,
+        isTaskCompleted: false,
       }
     });
 

@@ -60,52 +60,64 @@ export class EditProjectPage extends AppComponent implements OnInit {
     public dialog: MatDialog
   ) {
     super();
-    this.employees = new PouchDB('employees');
+    // this.db = new PouchDB('employees');
   }
 
   ngOnInit() {
-    this.employees.bulkDocs([
-      {
-        _id: '1',
-        name: 'Alfred Pennyworth',
-      },
-      {
-        _id: '2',
-        name: 'Selina Kyle',
-      },
-      {
-        _id: '3',
-        name: 'Bruce Wayne',
-      }, {
-        _id: '4',
-        name: 'Jim Gordon'
-      },
-      {
-        _id: '5',
-        name: 'Tim Drake'
-      },
-      {
-        _id: '6',
-        name: 'Lucius Fox'
-      }
-    ]).then(() => {
-      return this.employees.allDocs({
-        include_docs: true
-      });
-    }).then((response) => {
-      for (const row of response.rows) {
-        this.employeesList.push(row.doc.name);
-      }
-      console.log(response);
-    }).then((err) => {
-      console.log(err);
+
+    this.db.put({
+      _id: 'employees',
+      employees: [
+        'Alfred Pennyworth',
+        'Selina Kyle',
+        'Bruce Wayne',
+        'Jim Gordon',
+        'Tim Drake',
+        'Lucius Fox'
+      ]
     });
+  //   this.db.bulkDocs([
+  //     {
+  //       _id: '1',
+  //       name: 'Alfred Pennyworth',
+  //     },
+  //     {
+  //       _id: '2',
+  //       name: 'Selina Kyle',
+  //     },
+  //     {
+  //       _id: '3',
+  //       name: 'Bruce Wayne',
+  //     }, {
+  //       _id: '4',
+  //       name: 'Jim Gordon'
+  //     },
+  //     {
+  //       _id: '5',
+  //       name: 'Tim Drake'
+  //     },
+  //     {
+  //       _id: '6',
+  //       name: 'Lucius Fox'
+  //     }
+  //   ]).then(() => {
+  //     return this.db.allDocs({
+  //       include_docs: true
+  //     });
+  //   }).then((response) => {
+  //     for (const row of response.rows) {
+  //       this.employeesList.push(row.doc.name);
+  //     }
+  //     console.log(response);
+  //   }).then((err) => {
+  //     console.log(err);
+  //   });
 
-    // for (let i = 0; i < this.employees.allDocs(); ++i) {
-    //   this.employeesList.push(this.employees[i].name);
-    // }
+  //   // for (let i = 0; i < this.employees.allDocs(); ++i) {
+  //   //   this.employeesList.push(this.employees[i].name);
+  //   // }
 
-    console.log(this.employeesList);
+  //   console.log(this.employeesList);
   }
 
   compare(c1: any, c2: any) {

@@ -11,7 +11,8 @@
               class="form-control">
           </mat-form-field>
       <mat-grid-tile-header>Name and Description</mat-grid-tile-header>
-      <div class="gridBody">Description
+      <div class="gridBody">
+      <div>Description</div>
       <textarea id="description-text"></textarea>
       <!-- </form> -->
     </div>
@@ -35,33 +36,49 @@
     <mat-grid-tile id="risks-list" colspan="2" rowspan="1.5">
       <mat-grid-tile-header>Risks</mat-grid-tile-header>
       <br/><br/>
-      <button mat-raised-button color="accent" (click)="addRisk()">Add New Risk</button>
+      <button mat-raised-button class="add" (click)="addRisk()">Add New Risk</button>
 
-      <mat-selection-list>
-        <!-- <mat-list-option>Risk 1</mat-list-option>
-        <mat-list-option>Risk 2</mat-list-option>
-        <mat-list-option>Risk 3</mat-list-option>
-        <mat-list-option>Other (please specify)</mat-list-option>
-        <mat-form-field id="other">
-            <input matInput placeholder="Other Risk" type="textarea" formControlName="otherRisk"
-            class="form-control" > -->
-            <!-- [ngClass]=" { 'is-invalid': submitted && f.age.errors}"  -->
-          <!-- </mat-form-field>         -->
-        </mat-selection-list>
+      <mat-list>
+        <mat-list-item>
+          <div class="column">Name</div>
+          <div class="column">Description</div>
+        </mat-list-item>
+        <mat-list-item>
+          <div class="column">ABC</div>
+          <div class="column">This risk is dangerous!</div>
+          <div class="inner-buttons">
+            <button mat-raised-button class="edit">Edit</button>
+            <button mat-raised-button class="delete">Delete</button>
+        </div>
+        </mat-list-item>
+        </mat-list>
     </mat-grid-tile> 
   
   
-    
     <mat-grid-tile id="requirements-list" colspan="2" rowspan="1.5">
       <mat-grid-tile-header>Requirements</mat-grid-tile-header>
       <br/><br/>
-      <button mat-raised-button color="accent" (click)="addRequirement()">Add New Requirement</button>
-      <mat-selection-list>
-      <!-- <mat-selection-list #timeSelectionList [compareWith]="compare" [formControl]="timeBoxes"> -->
-          <!-- <mat-list-option *ngFor="let time of allTimes" [value]="time">
-            {{time}}
-          </mat-list-option> -->
-        </mat-selection-list>
+      <button mat-raised-button class="add" (click)="addRequirement()">Add New Requirement</button>
+      <mat-list>
+          <mat-list-item>
+              <div class="column">Name</div>
+              <div class="column">Category</div>
+              <div class="column">Description</div>
+              <div class="column">Priority</div>
+          </mat-list-item>
+  
+        <mat-list-item>
+            <div class="column">Easy to use</div>
+            <div class="column">Non-Functional</div>
+            <div class="column">Must be easy to use! Or else we will all bee in trouble!!!!</div>
+            <div class="column">1</div>
+            <div class="inner-buttons">
+              <button mat-raised-button class="edit">Edit</button>
+              <button mat-raised-button class="delete">Delete</button>
+          </div>
+        </mat-list-item>
+        
+      </mat-list>
     </mat-grid-tile>
     <mat-grid-tile colspan="2" rowspan="0.5"></mat-grid-tile>
   </mat-grid-list>

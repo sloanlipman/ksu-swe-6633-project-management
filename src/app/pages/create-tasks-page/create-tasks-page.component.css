@@ -1,0 +1,56 @@
+.add {
+  background: green;
+  margin-bottom: 5px;
+}
+
+.edit {
+  background: blue;
+}
+
+.delete {
+  background: red;
+}
+
+.complete {
+  background: plum;
+}
+
+.inner-buttons {
+  margin-left: 2rem;
+}
+
+.column {
+  margin-right: 3rem;
+}
+
+.column1 {
+  margin-right: 13rem;
+}
+.phaseColumn {
+  width: 30rem;
+  margin-right: 2rem;
+}
+
+.estimated {
+  width: 12rem;
+  margin-right: 2rem;
+
+}
+
+.logged {
+  width: 10rem;
+  margin-right: 2rem;
+
+}
+
+.task {
+  background: mediumaquamarine;
+}
+
+.category {
+  margin-right: 1rem;
+}
+
+/* mat-list-item { */
+  /* margin-bottom: 50px;
+} */

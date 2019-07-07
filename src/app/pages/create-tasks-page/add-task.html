@@ -4,9 +4,6 @@
     <input matInput placeholder="Name" required [(ngModel)]="data.name">
   </mat-form-field>
   <mat-form-field>
-      <input matInput placeholder=" Description" required [(ngModel)]="data.description">
-  </mat-form-field>
-  <mat-form-field>
       <mat-label>Associated Requirement</mat-label>
       <mat-select required [(ngModel)]="data.requirement">
         <mat-option>R1</mat-option>
@@ -14,6 +11,7 @@
         <!-- Use *ngFor for the mat-options instead -->
       </mat-select>
   </mat-form-field>
+   
   <mat-form-field>
       <mat-label>Assigned To</mat-label>
       <mat-select required [(ngModel)]="data.team">
@@ -22,13 +20,62 @@
         <!-- Use *ngFor for the mat-options instead -->
       </mat-select>
   </mat-form-field>
+  <br/>
   <mat-form-field>
-      <input matInput type="number" min="1" placeholder="Estimated Time" required [(ngModel)]="data.estimatedTime">
+      <textarea style="height:200px;" matInput placeholder=" Description" required [(ngModel)]="data.description"></textarea>
   </mat-form-field>
-  <mat-form-field>
-      <input matInput type="number" min="1" placeholder="Logged Time" required [(ngModel)]="data.loggedTime">
-  </mat-form-field>
+
+
+  <div>
+    <mat-label class="category">Requirements Analysis</mat-label>
+    <mat-form-field>
+        <input matInput type="number" min="1" placeholder="Estimated Time" required [(ngModel)]="data.estimatedTime">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="number" min="1" placeholder="Logged Time" required [(ngModel)]="data.loggedTime">
+    </mat-form-field>
+  </div>
+
+  <div>Designing
+    <mat-form-field>
+        <input matInput type="number" min="1" placeholder="Estimated Time" required [(ngModel)]="data.estimatedTime">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="number" min="1" placeholder="Logged Time" required [(ngModel)]="data.loggedTime">
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-label class="category">Coding</mat-label>
+    <mat-form-field>
+        <input matInput type="number" min="1" placeholder="Estimated Time" required [(ngModel)]="data.estimatedTime">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="number" min="1" placeholder="Logged Time" required [(ngModel)]="data.loggedTime">
+    </mat-form-field>
+  </div>
+
+  <div>Testing
+    <mat-label class="category">Testing</mat-label>
+    <mat-form-field>
+        <input matInput type="number" min="1" placeholder="Estimated Time" required [(ngModel)]="data.estimatedTime">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="number" min="1" placeholder="Logged Time" required [(ngModel)]="data.loggedTime">
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-label class="category">Project Management</mat-label>
+    <mat-form-field>
+        <input matInput type="number" min="1" placeholder="Estimated Time" required [(ngModel)]="data.estimatedTime">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="number" min="1" placeholder="Logged Time" required [(ngModel)]="data.loggedTime">
+    </mat-form-field>
+  </div>
 </div>
+
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
   <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Save</button>

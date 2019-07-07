@@ -34,6 +34,28 @@
   padding-top: 30px;
 }
 
-input {
-    text-emphasis-color: black;
-  }
+.add {
+  background: green;
+  margin-bottom: 5px;
+}
+
+.edit {
+  background: blue;
+}
+
+.delete {
+  background: red;
+}
+
+.inner-buttons {
+  margin-left: 20px;
+}
+
+.column {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+mat-list-item {
+  margin-bottom: 50px;
+}
