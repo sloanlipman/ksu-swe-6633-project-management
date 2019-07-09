@@ -14,8 +14,8 @@
 
 </mat-form-field>
 <br/>
-<button mat-raised-button color="primary">Edit Project Details</button>
-<button mat-raised-button color="warn">Update Project Status</button>
+<button mat-raised-button color="primary" (click)="editProject()">Edit Project Details</button>
+<button mat-raised-button color="warn" (click)="updateProject()">Update Project Status</button>
 
 <mat-grid-list cols="6" rowHeight="25rem"  [gutterSize]="'15px'">
     <mat-grid-tile class="dummy" colspan="1" rowspan="1.5"></mat-grid-tile>

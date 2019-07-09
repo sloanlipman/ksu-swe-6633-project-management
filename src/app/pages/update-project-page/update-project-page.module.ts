@@ -4,12 +4,12 @@ import { RouterModule } from '@angular/router';
 import { AppMaterialModule } from 'src/app/app-material.module';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { CreateTasksPage, AddTaskDialog } from './create-tasks-page.component';
+import { UpdateProjectPage, AddTaskDialog } from './update-project-page.component';
 
 @NgModule({
   declarations: [
     AddTaskDialog,
-    CreateTasksPage,
+    UpdateProjectPage,
   ],
   imports: [
     AppMaterialModule,
@@ -19,16 +19,16 @@ import { CreateTasksPage, AddTaskDialog } from './create-tasks-page.component';
     RouterModule.forChild([
       {
         path: '',
-        component: CreateTasksPage
+        component: UpdateProjectPage
       }
     ])
   ],
   exports: [
-    CreateTasksPage
+    UpdateProjectPage
   ],
   entryComponents: [
     AddTaskDialog
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class CreateTasksPageModule{}
+export class UpdateProjectPageModule{}

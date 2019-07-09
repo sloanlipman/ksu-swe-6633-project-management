@@ -1,5 +1,9 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Injector } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { Router } from '@angular/router';
+import { AppComponent } from 'src/app/app.component';
+import PouchDB from 'pouchdb';
+
 
 export interface TaskData {
   name: string;
@@ -19,7 +23,7 @@ export interface TaskData {
 @Component({
   selector: 'add-task',
   templateUrl: 'add-task.html',
-  styleUrls: ['./create-tasks-page.component.css']
+  styleUrls: ['./update-project-page.component.css']
 })
 export class AddTaskDialog {
 
@@ -34,17 +38,23 @@ export class AddTaskDialog {
 }
 
 @Component({
-  selector: 'create-tasks-page',
-  templateUrl: './create-tasks-page.component.html',
-  styleUrls: ['./create-tasks-page.component.css']
+  selector: 'update-project-page',
+  templateUrl: './update-project-page.component.html',
+  styleUrls: ['./update-project-page.component.css']
 })
-export class CreateTasksPage implements OnInit {
-
+export class UpdateProjectPage extends AppComponent implements OnInit {
+  db: any;
   constructor(
-    public dialog: MatDialog
-  ) { }
+    public dialog: MatDialog,
+    protected router: Router,
+    protected injector: Injector
+  ) {
+    super(injector);
+  }
 
   ngOnInit() {
+    this.db = new PouchDB('pmonkey');
+
   }
 
   addTask() {

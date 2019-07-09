@@ -5,8 +5,8 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 
   {
-    path: 'tasks', // TODO add /:id
-    loadChildren: './pages/create-tasks-page/create-tasks-page.module#CreateTasksPageModule'
+    path: 'update', // TODO add /:id
+    loadChildren: './pages/update-project-page/update-project-page.module#UpdateProjectPageModule'
   },
 
   {

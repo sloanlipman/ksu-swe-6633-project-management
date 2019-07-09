@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import PouchDB from 'pouchdb';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -7,15 +9,27 @@ import PouchDB from 'pouchdb';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  protected router: Router;
+  protected location: Location;
   title = 'project-management';
   employeeCount = 0;
 
   db: any;
 
   employeesList = [];
+  constructor(
+      protected injector: Injector
+    ) {
+      this.router = this.injector.get(Router);
+      this.location = this.injector.get(Location);
+    }
 
   ngOnInit() {
     this.db = new PouchDB('pmonkey');
+    this.db.put({
+      _id: 'Project ABC',
+      description: 'Test project'
+    }).catch(console.log.bind(console));
     // this.addEmployee();
 
   //   this.projects.put({
@@ -163,5 +177,17 @@ export class AppComponent implements OnInit {
   //         });
   //     });
   //   });
+  }
+
+  home() {
+    this.router.navigateByUrl('/home');
+  }
+
+  manageEmployees() {
+    this.router.navigateByUrl('/employees');
+  }
+
+  createProject() {
+    this.router.navigateByUrl('/edit'); // TODO add a path here for identifying project as new one
   }
 }

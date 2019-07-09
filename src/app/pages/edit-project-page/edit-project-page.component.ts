@@ -1,7 +1,8 @@
-import { Component, OnInit, ɵCompiler_compileModuleSync__POST_R3__, Inject } from '@angular/core';
+import { Component, OnInit, ɵCompiler_compileModuleSync__POST_R3__, Inject, Injector } from '@angular/core';
 import { AppComponent } from 'src/app/app.component';
 import PouchDB from 'pouchdb';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Router } from '@angular/router';
 
 export interface RiskDialogData {
   name: string;
@@ -55,27 +56,19 @@ export class AddRequirementDialog {
   styleUrls: ['./edit-project-page.component.css']
 })
 export class EditProjectPage extends AppComponent implements OnInit {
-
+  db: any;
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    protected router: Router,
+    protected injector: Injector,
   ) {
-    super();
+    super(injector);
     // this.db = new PouchDB('employees');
   }
 
   ngOnInit() {
+    this.db = new PouchDB('pmonkey');
 
-    this.db.put({
-      _id: 'employees',
-      employees: [
-        'Alfred Pennyworth',
-        'Selina Kyle',
-        'Bruce Wayne',
-        'Jim Gordon',
-        'Tim Drake',
-        'Lucius Fox'
-      ]
-    });
   //   this.db.bulkDocs([
   //     {
   //       _id: '1',
