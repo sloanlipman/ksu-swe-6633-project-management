@@ -6,7 +6,10 @@
       <!-- use *ngFor to get list of employees-->
     </div>
        <mat-list>
-         <mat-list-item *ngFor="let employee of employeesList"> {{ employee }}</mat-list-item>
+         <mat-list-item *ngFor="let employee of employeesList"> 
+           <div class="employee-name">{{ employee }}</div>
+           <button mat-raised-button (click)="removeEmployee(employee)" class="delete">Delete</button>
+         </mat-list-item>
          <!-- <mat-list-item>Selina Kyle</mat-list-item>
          <mat-list-item>Allfred Pennyworth</mat-list-item>
          <mat-list-item>Bruce Wayne</mat-list-item>

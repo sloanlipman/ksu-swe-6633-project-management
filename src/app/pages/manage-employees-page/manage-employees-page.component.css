@@ -1,3 +1,11 @@
 mat-grid-tile {
   background: #e25f5f;
 }
+
+.delete {
+  background: orange;
+}
+
+.employee-name {
+  width: 100px;
+}
