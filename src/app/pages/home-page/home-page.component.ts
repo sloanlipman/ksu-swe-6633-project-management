@@ -2,6 +2,8 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import PouchDB from 'pouchdb';
+import { FormControl } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'home-page',
@@ -9,26 +11,56 @@ import PouchDB from 'pouchdb';
   styleUrls: ['./home-page.component.css']
 })
 export class HomePage extends AppComponent implements OnInit {
+  currentProject: FormControl;
   selectedProject: any;
+  projects: any[];
   db: any;
   constructor(
     protected router: Router,
     protected injector: Injector,
+    private snackBar: MatSnackBar
   ) {
     super(injector);
   }
 
   ngOnInit() {
+    this.currentProject = new FormControl();
     this.db = new PouchDB('pmonkey');
-
+    this.getProjects();
   }
 
-  editProject(selectedProject) {
-    this.router.navigateByUrl('/edit'); // TODO make it specific to a project
+  getProjects() {
+    this.db.get('projects').then((doc) => {
+      this.projects = doc.projects;
+      console.log(this.projects);
+      this.currentProject.setValue(this.projects[0]);
+    }).catch(err => console.log(err));
   }
 
-  updateProject(selectedProject) {
-    this.router.navigateByUrl('/update'); // TODO make it specific to a project
+  onSelectProject() {}
+
+  editProject() {
+    const name = this.currentProject.value;
+    if (!name) {
+      this.promptForCreateProject();
+    } else {
+      this.router.navigateByUrl('/edit/' + name);
+    }  }
+
+  updateProject() {
+    const name = this.currentProject.value;
+    if (!name) {
+      this.promptForCreateProject();
+    } else {
+      this.router.navigateByUrl('/update/' + name);
+    }
+  }
+
+  promptForCreateProject() {
+    this.snackBar.open('Please create a project first!', '', {
+      duration: 3000,
+      verticalPosition: 'top',
+    });
   }
 
 }

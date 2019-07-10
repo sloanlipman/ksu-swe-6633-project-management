@@ -13,7 +13,8 @@ export class AppComponent implements OnInit {
   protected location: Location;
   title = 'project-management';
   employeeCount = 0;
-
+  projects: any[];
+  employees: any[];
   db: any;
 
   employeesList = [];
@@ -27,10 +28,15 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.db = new PouchDB('pmonkey');
     this.db.put({
-      _id: 'Project ABC',
-      description: 'Test project'
-    }).catch(console.log.bind(console));
-    // this.addEmployee();
+      _id: 'projects',
+      projects: []
+    }).catch(err => console.log(err));
+
+
+    this.db.put({
+      _id: 'employees',
+      employees: []
+    }).catch(err => console.log(err));
 
   //   this.projects.put({
   //       _id: 'Project ABC',
@@ -188,6 +194,18 @@ export class AppComponent implements OnInit {
   }
 
   createProject() {
-    this.router.navigateByUrl('/edit'); // TODO add a path here for identifying project as new one
+    this.router.navigateByUrl('/edit/new'); // TODO add a path here for identifying project as new one
+  }
+
+
+  getProjectsList() {
+    this.db.get('projects').catch(err => {
+      if (err.name === 'not_found') {
+        return {
+          _id: 'projects',
+          projects: []
+        };
+      }
+    });
   }
 }

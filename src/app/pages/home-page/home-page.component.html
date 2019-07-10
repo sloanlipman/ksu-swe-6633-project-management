@@ -1,15 +1,9 @@
 <mat-form-field>
-  <mat-select>
+  <mat-select [formControl]="currentProject">
     <mat-label>Ongoing Projects</mat-label>
-  <!-- Use *ngFor to assign these
     <mat-option *ngFor="let project of projects" [value] = project>
       {{project}}
     </mat-option>
-  
-  -->
-  <mat-option value="abc">Project ABC</mat-option>
-  <mat-option value="123">Project 123</mat-option>
-  <mat-option value="drm">Project Do Re Mi</mat-option>
 </mat-select>
 
 </mat-form-field>

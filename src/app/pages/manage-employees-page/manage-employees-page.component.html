@@ -1,7 +1,7 @@
 <mat-grid-list cols="6" rowHeight="25rem"  [gutterSize]="'15px'">
     <mat-grid-tile class="dummy" colspan="1" rowspan="1.5"></mat-grid-tile>
   <mat-grid-tile colspan="4" rowspan="1.5">
-    <mat-grid-tile-header>Employees</mat-grid-tile-header> <!--Use *ngFor to show lists of projects, dynamically put their names in-->
+    <mat-grid-tile-header>Employees</mat-grid-tile-header> 
     <div class="gridBody">
       <!-- use *ngFor to get list of employees-->
     </div>
@@ -10,12 +10,6 @@
            <div class="employee-name">{{ employee }}</div>
            <button mat-raised-button (click)="removeEmployee(employee)" class="delete">Delete</button>
          </mat-list-item>
-         <!-- <mat-list-item>Selina Kyle</mat-list-item>
-         <mat-list-item>Allfred Pennyworth</mat-list-item>
-         <mat-list-item>Bruce Wayne</mat-list-item>
-         <mat-list-item>Lucius Fox</mat-list-item>
-         <mat-list-item>Jim Gordon</mat-list-item>
-         <mat-list-item>Tim Drake</mat-list-item> -->
          <button mat-raised-button color="primary" (click)="addEmployee()">Add New Employee</button>
        </mat-list>
    </mat-grid-tile>

@@ -28,9 +28,9 @@ export class AddEmployeeDialog {
   templateUrl: './manage-employees-page.component.html',
   styleUrls: ['./manage-employees-page.component.css']
 })
+
 export class ManageEmployeesPage extends AppComponent implements OnInit {
   db: any;
-  employeesList = [];
   constructor(
     public dialog: MatDialog,
     protected router: Router,
@@ -44,6 +44,7 @@ export class ManageEmployeesPage extends AppComponent implements OnInit {
     this.db = new PouchDB('pmonkey'); // Instantiate the DB
 
     this.db.get('employees').then((doc) => { // Retrieve the employees document
+      console.log('Doc is', doc);
       doc.employees.forEach(emp => {
         this.employeesList.push(emp); // For each employee already in the DB, add to class variable array so UI will display
       });
@@ -70,8 +71,9 @@ export class ManageEmployeesPage extends AppComponent implements OnInit {
           }
         });
 
+    // TODO check if newName is > 0 characters
     // If the employee is a new name, add it to the list
-        if (!existingEmployee) {
+        if (!existingEmployee)  {
           empList.push(newName); // Add the new employee name to the document
           return this.db.put({ // Update the document in the DB
             _id: 'employees', // Keep the document name the same

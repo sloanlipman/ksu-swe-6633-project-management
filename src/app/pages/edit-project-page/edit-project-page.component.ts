@@ -1,8 +1,9 @@
 import { Component, OnInit, ɵCompiler_compileModuleSync__POST_R3__, Inject, Injector } from '@angular/core';
 import { AppComponent } from 'src/app/app.component';
 import PouchDB from 'pouchdb';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 export interface RiskDialogData {
   name: string;
@@ -57,60 +58,47 @@ export class AddRequirementDialog {
 })
 export class EditProjectPage extends AppComponent implements OnInit {
   db: any;
+  employeesList: any[];
+  generalInfo: FormGroup;
+  teamMembers: FormControl;
+  projectManager: FormControl;
+
   constructor(
     public dialog: MatDialog,
     protected router: Router,
     protected injector: Injector,
+    private formBuilder: FormBuilder,
+    public snackBar: MatSnackBar
   ) {
     super(injector);
-    // this.db = new PouchDB('employees');
   }
 
   ngOnInit() {
+    this.getEmployeeList();
+    this.getFormControls();
+    this.getProjectsList();
+
+    if (this.router.url !== '/edit/new') {
+      // Load data
+    }
+  }
+
+  getEmployeeList() {
     this.db = new PouchDB('pmonkey');
+    this.db.get('employees').then((doc) => {
+      this.employeesList = doc.employees;
+    }).catch(err => console.log(err));
+  }
 
-  //   this.db.bulkDocs([
-  //     {
-  //       _id: '1',
-  //       name: 'Alfred Pennyworth',
-  //     },
-  //     {
-  //       _id: '2',
-  //       name: 'Selina Kyle',
-  //     },
-  //     {
-  //       _id: '3',
-  //       name: 'Bruce Wayne',
-  //     }, {
-  //       _id: '4',
-  //       name: 'Jim Gordon'
-  //     },
-  //     {
-  //       _id: '5',
-  //       name: 'Tim Drake'
-  //     },
-  //     {
-  //       _id: '6',
-  //       name: 'Lucius Fox'
-  //     }
-  //   ]).then(() => {
-  //     return this.db.allDocs({
-  //       include_docs: true
-  //     });
-  //   }).then((response) => {
-  //     for (const row of response.rows) {
-  //       this.employeesList.push(row.doc.name);
-  //     }
-  //     console.log(response);
-  //   }).then((err) => {
-  //     console.log(err);
-  //   });
-
-  //   // for (let i = 0; i < this.employees.allDocs(); ++i) {
-  //   //   this.employeesList.push(this.employees[i].name);
-  //   // }
-
-  //   console.log(this.employeesList);
+  getFormControls() {
+    this.generalInfo = this.formBuilder.group({
+      projectName: new FormControl('', [Validators.required]),
+      projectDescription: new FormControl('', [Validators.required]),
+    });
+    this.teamMembers = new FormControl();
+    this.projectManager = new FormControl(); // TODO can project manager also be on the team? Should it auto select, auto-deselect?3
+                                              // "On the team" means you can assign work to them, then yes.
+                                              // Otherwise, can only get PM duties?
   }
 
   compare(c1: any, c2: any) {
@@ -144,6 +132,7 @@ export class EditProjectPage extends AppComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
       // Push result to an array containing requirements so that it will populate on the UI
     });
   }
@@ -152,7 +141,83 @@ export class EditProjectPage extends AppComponent implements OnInit {
 
   }
 
-  editRequirements() {
+  editRequirement() {
 
+  }
+
+  get f() {
+    return this.generalInfo.controls;
+  }
+
+  save() {
+    const id = this.f.projectName.value;
+    const desc = this.f.projectDescription.value;
+    const team = this.teamMembers.value;
+    const manager = this.projectManager.value;
+    console.log(this.f.projectName.value);
+    console.log(this.f.projectDescription.value);
+    // Step 1: Create a document for this project
+    if (!this.generalInfo.invalid) {
+      this.db.get(id).catch((err) => { // Try to get the project by ID
+        if (err.name === 'not_found') { // If project is not found
+          return { // Return a new document
+            _id: id,
+            description: desc,
+            projectManager: manager,
+            teamMembers: team,
+            requirements: [],
+            risks: [],
+            tasks: []
+          };
+        } else {
+            console.log(err); // Catch other errors
+        }
+      }).then((doc) => { // Project document was found
+        this.db.put({ // Update document
+          _id: id,
+          _rev: doc._rev,
+          description: desc,
+          projectManager: manager,
+          teamMembers: team,
+          requirements: [],
+          risks: [],
+          tasks: []
+        }).catch(err => console.log(err));
+      }).catch(err => console.log(err));
+
+    // Step 2 Add this project to a list of projects in the same manner
+      this.db.get('projects').catch((err) => {
+        if (err.name === 'not_found') {
+          return {
+            _id: 'projects',
+            projects: [id] // Needs to be an array!
+          };
+        } else {
+          console.log(err);
+        }
+      }).then((doc) => {
+          const projectList = doc.projects;
+
+          if (!projectList.includes(id)) {
+            projectList.push(id);
+          }
+
+          return this.db.put({
+            _id: 'projects',
+            _rev: doc._rev,
+            projects: projectList
+          }).then(() => {
+            this.snackBar.open('Project saved!', '', { // Display a success message to the user!
+              duration: 3000,
+              verticalPosition: 'top',
+            });
+        // Verify that everything worked. We can delete this .then() block when we are sure of the methods
+        }).then(() => {
+          this.db.get(id).then((document) => {
+            console.log(document);
+          }).catch(err => console.log(err));
+        }).catch(err => console.log(err));
+      }).catch(err => console.log(err));
+    }
   }
 }

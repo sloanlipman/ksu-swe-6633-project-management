@@ -1,31 +1,32 @@
 <div class="button">
     <!-- <button mat-raised-button class="cancel" *ngIf="isExistingUser()" (click)="goBack()">Cancel</button> -->
-    <button mat-raised-button color="primary">Submit Changes</button>
+    <button mat-raised-button color="primary" (click)="save()">Submit Changes</button>
 </div>
 <br/><br/>
 <mat-grid-list cols="8" rowHeight="20rem" [gutterSize]="'15px'">
-    <!-- <form [formGroup]="generalInfo"> -->
     <mat-grid-tile colspan="2" rowspan="1.5" id="information">
-      <mat-form-field id="project-name">
-            <input matInput placeholder="Name of Project" type="text" formControlName="projectName" required
-              class="form-control">
-          </mat-form-field>
-      <mat-grid-tile-header>Name and Description</mat-grid-tile-header>
-      <div class="gridBody">
-      <div>Description</div>
-      <textarea id="description-text"></textarea>
-      <!-- </form> -->
-    </div>
+      
+        <mat-grid-tile-header>Name and Description</mat-grid-tile-header>
+        <form [formGroup]="generalInfo">
+          <mat-form-field id="project-name">
+            <input matInput placeholder="Name of Project" type="text" formControlName="projectName" required class="form-control">
+          </mat-form-field><br/>
+          <mat-form-field id="project-description">
+            <div class="gridBody">
+              <textarea matInput placeholder="Description" formControlName="projectDescription" class="form-control" id="description-text"></textarea>
+          </div>
+        </mat-form-field>
+      </form>
     </mat-grid-tile>
   
     <mat-grid-tile id="employee-list" colspan="2" rowspan="1.5">
-      <mat-grid-tile-header>Team Memberst</mat-grid-tile-header>
+      <mat-grid-tile-header>Team Members</mat-grid-tile-header>
       <div id="project-manager">Project Manager <br/>
-      <mat-select id="team-select">
+      <mat-select id="team-select" [formControl]="projectManager">
         <mat-option *ngFor="let employee of employeesList" [value]=employee>{{ employee }}</mat-option>
       </mat-select>
     </div>
-        <mat-selection-list [compareWith]="compare" [formControl]="employeesList">
+        <mat-selection-list [compareWith]="compare" [formControl]="teamMembers">
             <mat-list-option *ngFor="let employee of employeesList" [value]="employee">
               {{ employee }}
             </mat-list-option>

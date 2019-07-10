@@ -5,12 +5,12 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 
   {
-    path: 'update', // TODO add /:id
+    path: 'update/:id',
     loadChildren: './pages/update-project-page/update-project-page.module#UpdateProjectPageModule'
   },
 
   {
-    path: 'edit', // TODO add /:id
+    path: 'edit/:id',
     loadChildren: './pages/edit-project-page/edit-project-page.module#EditProjectPageModule'
   },
 
