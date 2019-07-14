@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ManageEmployeesPage } from './manage-employees-page.component';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AppMaterialModule } from 'src/app/app-material.module';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ManageEmployeesPageComponent', () => {
   let component: ManageEmployeesPage;
@@ -8,7 +13,15 @@ describe('ManageEmployeesPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ManageEmployeesPage ]
+      declarations: [ ManageEmployeesPage ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [
+        AppMaterialModule,
+        RouterTestingModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule
+      ],
+      providers: [FormBuilder]
     })
     .compileComponents();
   }));
