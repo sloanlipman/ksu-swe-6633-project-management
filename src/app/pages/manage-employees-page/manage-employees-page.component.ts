@@ -13,6 +13,7 @@ export interface EmployeeDataDialog {
   templateUrl: 'add-employee.html',
 })
 export class AddEmployeeDialog {
+    name: any;
 
   constructor(
     public dialogRef: MatDialogRef<AddEmployeeDialog>,

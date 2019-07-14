@@ -26,6 +26,12 @@ export interface TaskData {
   styleUrls: ['./update-project-page.component.css']
 })
 export class AddTaskDialog {
+  name: any;
+  requirement: any;
+  team: any;
+  description: any;
+  estimatedTime: any;
+  loggedTime: any;
 
   constructor(
     public dialogRef: MatDialogRef<AddTaskDialog>,
