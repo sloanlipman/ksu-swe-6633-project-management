@@ -48,7 +48,7 @@
           <div class="column">ABC</div>
           <div class="column">This risk is dangerous!</div>
           <div class="inner-buttons">
-            <button mat-raised-button class="edit">Edit</button>
+            <button mat-raised-button class="edit"(click)="editRisk(risk)">Edit</button>
             <button mat-raised-button class="delete">Delete</button>
         </div>
         </mat-list-item>
@@ -74,7 +74,7 @@
             <div class="column">Must be easy to use! Or else we will all bee in trouble!!!!</div>
             <div class="column">1</div>
             <div class="inner-buttons">
-              <button mat-raised-button class="edit">Edit</button>
+              <button mat-raised-button class="edit"(click)="editRequirement(requirement)">Edit</button>
               <button mat-raised-button class="delete">Delete</button>
           </div>
         </mat-list-item>

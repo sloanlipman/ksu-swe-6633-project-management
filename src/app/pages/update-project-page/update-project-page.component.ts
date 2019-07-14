@@ -50,6 +50,7 @@ export class AddTaskDialog {
 })
 export class UpdateProjectPage extends AppComponent implements OnInit {
   db: any;
+  tasksArray: any;
   constructor(
     public dialog: MatDialog,
     protected router: Router,
@@ -83,11 +84,42 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.tasksArray.push({
+        name: result.name,
+        description: result.description,
+        requirement: result.requirement,
+        estimatedTime:  result.estimatedTime,
+        loggedTime: result.loggedTime,
+        remainingTime: 0,
+        assignedTo: result.assignedTo,
+        areRequirementsCompleted: false,
+        isDesigningCompleted: false,
+        isCodingCompleted: false,
+        isTestingCompleted: false,
+        isTaskCompleted: false,
+      });
       // Push result to an array containing risks so that it will populate on the UI
       console.log('after closed', result);
     });
   }
 
-  editTask() {}
-
+  editTask(task){
+    const dialogRef = this.dialog.open(AddTaskDialog, {
+    width: '600px',
+    data: {
+      name: task.name,
+      description: task.description,
+      requirement: task.requirement,
+      estimatedTime: task.estimatedTime,
+      loggedTime: task.loggedTime,
+      remainingTime: 0,
+      assignedTo: task.assignedTo,
+      areRequirementsCompleted: false,
+      isDesigningCompleted: false,
+      isCodingCompleted: false,
+      isTestingCompleted: false,
+      isTaskCompleted: false,
+    }
+  });
+  }
 }

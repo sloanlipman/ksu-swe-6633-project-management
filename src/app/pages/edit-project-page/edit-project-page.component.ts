@@ -62,6 +62,9 @@ export class EditProjectPage extends AppComponent implements OnInit {
   generalInfo: FormGroup;
   teamMembers: FormControl;
   projectManager: FormControl;
+  requirementsArray: any;
+  risksArray: any;
+  tasksArray: any;
 
   constructor(
     public dialog: MatDialog,
@@ -115,6 +118,10 @@ export class EditProjectPage extends AppComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.risksArray.push({
+        name: result.name,
+        description: result.description
+      });
       // Push result to an array containing risks so that it will populate on the UI
       console.log('after closed', result);
     });
@@ -132,17 +139,38 @@ export class EditProjectPage extends AppComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.requirementsArray.push({
+        name: result.name,
+        description: result.description,
+        category: result.category,
+        priority: result.priority
+      });
       console.log(result);
       // Push result to an array containing requirements so that it will populate on the UI
     });
   }
 
-  editRisk() {
+  editRisk(risk) {
+    const dialogRef = this.dialog.open(AddRiskDialog, {
+      width: '450px',
+      data: {
+        name: risk.name,
+        description: risk.description
+      }
+    });
 
   }
 
-  editRequirement() {
-
+  editRequirement(requirement) {
+    const dialogRef = this.dialog.open(AddRequirementDialog, {
+      width: '450px',
+      data: {
+        name: requirement.name,
+        description: requirement.description,
+        category: requirement.category,
+        priority: requirement.priority
+      }
+    });
   }
 
   get f() {
@@ -154,6 +182,9 @@ export class EditProjectPage extends AppComponent implements OnInit {
     const desc = this.f.projectDescription.value;
     const team = this.teamMembers.value;
     const manager = this.projectManager.value;
+    const risks = this.requirementsArray.value;
+    const requirements = this.requirementsArray.value;
+    const tasks = this.tasksArray.value;
     console.log(this.f.projectName.value);
     console.log(this.f.projectDescription.value);
     // Step 1: Create a document for this project
@@ -165,9 +196,9 @@ export class EditProjectPage extends AppComponent implements OnInit {
             description: desc,
             projectManager: manager,
             teamMembers: team,
-            requirements: [],
-            risks: [],
-            tasks: []
+            requirements: this.requirementsArray,
+            risks: this.risksArray,
+            tasks: this.tasksArray
           };
         } else {
             console.log(err); // Catch other errors
@@ -179,8 +210,8 @@ export class EditProjectPage extends AppComponent implements OnInit {
           description: desc,
           projectManager: manager,
           teamMembers: team,
-          requirements: [],
-          risks: [],
+          requirements: this.requirementsArray,
+          risks: this.risksArray,
           tasks: []
         }).catch(err => console.log(err));
       }).catch(err => console.log(err));
