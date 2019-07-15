@@ -188,7 +188,6 @@ export class EditProjectPage extends AppComponent implements OnInit {
         priority: result.priority
         };
      });
-    console.log(this.requirementsArray);
   }
 
   deleteRequirement(requirement) {
@@ -205,8 +204,6 @@ export class EditProjectPage extends AppComponent implements OnInit {
     const desc = this.f.projectDescription.value;
     const team = this.teamMembers.value;
     const manager = this.projectManager.value;
-    console.log(this.f.projectName.value);
-    console.log(this.f.projectDescription.value);
     // Step 1: Create a document for this project
     if (!this.generalInfo.invalid) {
       this.db.get(id).catch((err) => { // Try to get the project by ID
@@ -218,7 +215,6 @@ export class EditProjectPage extends AppComponent implements OnInit {
             teamMembers: team,
             requirements: this.requirementsArray,
             risks: this.risksArray,
-          
           };
         } else {
             console.log(err); // Catch other errors
