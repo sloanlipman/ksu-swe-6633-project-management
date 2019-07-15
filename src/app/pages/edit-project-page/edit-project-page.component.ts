@@ -15,6 +15,7 @@ export interface RequirementDialogData {
   description: string;
   category: string;
   priority: number;
+  // index: number;
 }
 
 
@@ -62,9 +63,9 @@ export class EditProjectPage extends AppComponent implements OnInit {
   generalInfo: FormGroup;
   teamMembers: FormControl;
   projectManager: FormControl;
-  requirementsArray: any;
-  risksArray: any;
-  tasksArray: any;
+  requirementsArray: any[];
+  risksArray: any[];
+  
 
   constructor(
     public dialog: MatDialog,
@@ -80,7 +81,8 @@ export class EditProjectPage extends AppComponent implements OnInit {
     this.getEmployeeList();
     this.getFormControls();
     this.getProjectsList();
-
+    this.requirementsArray = [];
+    this.risksArray = [];
     if (this.router.url !== '/edit/new') {
       // Load data
     }
@@ -128,13 +130,17 @@ export class EditProjectPage extends AppComponent implements OnInit {
   }
 
   addRequirement() {
+    console.log(this.requirementsArray);
+  
+
     const dialogRef = this.dialog.open(AddRequirementDialog, {
       width: '450px',
       data: {
         name: undefined,
         description: undefined,
         category: undefined,
-        priority: undefined
+        priority: undefined,
+        // index: this.requirementsArray.length
       }
     });
 
@@ -143,7 +149,8 @@ export class EditProjectPage extends AppComponent implements OnInit {
         name: result.name,
         description: result.description,
         category: result.category,
-        priority: result.priority
+        priority: result.priority,
+        // index: result.index
       });
       console.log(result);
       // Push result to an array containing requirements so that it will populate on the UI
@@ -162,6 +169,7 @@ export class EditProjectPage extends AppComponent implements OnInit {
   }
 
   editRequirement(requirement) {
+    const index = this.requirementsArray.indexOf(requirement);
     const dialogRef = this.dialog.open(AddRequirementDialog, {
       width: '450px',
       data: {
@@ -171,7 +179,22 @@ export class EditProjectPage extends AppComponent implements OnInit {
         priority: requirement.priority
       }
     });
+    
+    dialogRef.afterClosed().subscribe(result => {
+      this.requirementsArray[index] = {
+        name: result.name,
+        description: result.description,
+        category: result.category,
+        priority: result.priority
+        };
+     });
+    console.log(this.requirementsArray);
   }
+
+  deleteRequirement(requirement) {
+    const index = this.requirementsArray.indexOf(requirement);
+    this.requirementsArray.splice(index, 1);
+    }
 
   get f() {
     return this.generalInfo.controls;
@@ -182,9 +205,6 @@ export class EditProjectPage extends AppComponent implements OnInit {
     const desc = this.f.projectDescription.value;
     const team = this.teamMembers.value;
     const manager = this.projectManager.value;
-    const risks = this.requirementsArray.value;
-    const requirements = this.requirementsArray.value;
-    const tasks = this.tasksArray.value;
     console.log(this.f.projectName.value);
     console.log(this.f.projectDescription.value);
     // Step 1: Create a document for this project
@@ -198,7 +218,7 @@ export class EditProjectPage extends AppComponent implements OnInit {
             teamMembers: team,
             requirements: this.requirementsArray,
             risks: this.risksArray,
-            tasks: this.tasksArray
+          
           };
         } else {
             console.log(err); // Catch other errors

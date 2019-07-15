@@ -68,14 +68,15 @@
               <div class="column">Priority</div>
           </mat-list-item>
   
-        <mat-list-item>
-            <div class="column">Easy to use</div>
-            <div class="column">Non-Functional</div>
-            <div class="column">Must be easy to use! Or else we will all bee in trouble!!!!</div>
-            <div class="column">1</div>
+        <mat-list-item *ngFor="let req of requirementsArray">
+            <div class="column">{{req.name}}</div>
+            <div class="column">{{req.category}}</div>
+            <div class="column">{{req.description}}</div>
+            <div class="column">{{req.priority}}</div>
             <div class="inner-buttons">
-              <button mat-raised-button class="edit"(click)="editRequirement(requirement)">Edit</button>
-              <button mat-raised-button class="delete">Delete</button>
+              
+              <button mat-raised-button class="edit"(click)="editRequirement(req)">Edit</button>
+              <button mat-raised-button class="delete" (click)="deleteRequirement">Delete</button>
           </div>
         </mat-list-item>
         
