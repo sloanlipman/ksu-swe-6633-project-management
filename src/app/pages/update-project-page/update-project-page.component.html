@@ -1,70 +1,70 @@
 <div class="button">
-    <button mat-raised-button class="add" (click)="addTask()">Add New Task</button>
+  <button mat-raised-button class="add" (click)="addTask()">Add New Task</button>
 </div>
 <br/><br/>
 <mat-grid-list cols="6" rowHeight="20rem" [gutterSize]="'15px'">
 <!-- <form [formGroup]="generalInfo"> -->
 
 <mat-grid-tile class="task" colspan="2" rowspan="1.5">
-  <mat-grid-tile-header>Task 123</mat-grid-tile-header>
-  <br/><br/>
-  <button mat-raised-button class="edit">Edit Task</button>
-  <button mat-raised-button class="delete">Delete Task</button>
-  <h3>Assigned to: Jim Gordon</h3>
-  <h3>Related to: Easy to use</h3>
-  <h3>Some description about what this task needs to accomplish and why it exists</h3>
-  
+<mat-grid-tile-header>Task 123</mat-grid-tile-header>
+<br/><br/>
+<button mat-raised-button class="edit">Edit Task</button>
+<button mat-raised-button class="delete">Delete Task</button>
+<h3>Assigned to: Jim Gordon</h3>
+<h3>Related to: Easy to use</h3>
+<h3>Some description about what this task needs to accomplish and why it exists</h3>
 
-  <mat-list>
-    <mat-list-item>
-      <div class="column1">Phase</div>
-      <div class="column">Estimated<br/>Time</div>
-      <div class="column">Logged<br/>Time</div>
+
+<mat-list>
+  <mat-list-item>
+    <div class="column1">Phase</div>
+    <div class="column">Estimated<br/>Time</div>
+    <div class="column">Logged<br/>Time</div>
+  </mat-list-item>
+  <mat-list-item>
+    <div class="phaseColumn">Requirements Analysis</div>
+    <div class="estimated">3 days</div>
+    <div class="logged">1 day</div>
+    <div class="inner-buttons">
+      <button class="complete" mat-raised-button>Mark as Done</button>
+    </div>
     </mat-list-item>
-    <mat-list-item>
-      <div class="phaseColumn">Requirements Analysis</div>
-      <div class="estimated">3 days</div>
-      <div class="logged">1 day</div>
-      <div class="inner-buttons">
-        <button class="complete" mat-raised-button>Mark as Done</button>
-      </div>
-      </mat-list-item>
+
+  <mat-list-item>
+    <div class="phaseColumn">Designing<br/></div>
+    <div class="estimated">5 days</div>
+    <div class="logged">0 days</div>
+    <div class="inner-buttons">
+      <button class="complete" mat-raised-button>Mark as Done</button>
+    </div>
+  </mat-list-item>
+
+  <mat-list-item>
+    <div class="phaseColumn">Coding<br/></div>
+    <div class="estimated">3 days</div>
+    <div class="logged">0 days</div>
+    <div class="inner-buttons">
+      <button class="complete" mat-raised-button>Mark as Done</button>
+    </div>
+  </mat-list-item>
+
+  <mat-list-item>
+    <div class="phaseColumn">Testing<br/></div>
+    <div class="estimated">3 days</div>
+    <div class="logged">0 days</div>
+    <div class="inner-buttons">
+      <button class="complete" mat-raised-button>Mark as Done</button>
+    </div>
+    </mat-list-item>
 
     <mat-list-item>
-      <div class="phaseColumn">Designing<br/></div>
-      <div class="estimated">5 days</div>
+      <div class="phaseColumn">Project Management<br/></div>
+      <div class="estimated">3 days</div>
       <div class="logged">0 days</div>
       <div class="inner-buttons">
         <button class="complete" mat-raised-button>Mark as Done</button>
       </div>
     </mat-list-item>
-
-    <mat-list-item>
-      <div class="phaseColumn">Coding<br/></div>
-      <div class="estimated">3 days</div>
-      <div class="logged">0 days</div>
-      <div class="inner-buttons">
-        <button class="complete" mat-raised-button>Mark as Done</button>
-      </div>
-    </mat-list-item>
-
-    <mat-list-item>
-      <div class="phaseColumn">Testing<br/></div>
-      <div class="estimated">3 days</div>
-      <div class="logged">0 days</div>
-      <div class="inner-buttons">
-        <button class="complete" mat-raised-button>Mark as Done</button>
-      </div>
-      </mat-list-item>
-
-      <mat-list-item>
-        <div class="phaseColumn">Project Management<br/></div>
-        <div class="estimated">3 days</div>
-        <div class="logged">0 days</div>
-        <div class="inner-buttons">
-          <button class="complete" mat-raised-button>Mark as Done</button>
-        </div>
-      </mat-list-item>
-    </mat-list>
-  </mat-grid-tile> 
+  </mat-list>
+</mat-grid-tile> 
 </mat-grid-list>
