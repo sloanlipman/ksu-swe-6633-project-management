@@ -93,7 +93,7 @@
     projectManager: FormControl;
     requirementsArray: any[];
     risksArray: any[];
-
+    currentProjectName: string;
 
     constructor(
       public dialog: MatDialog,
@@ -106,6 +106,7 @@
     }
 
     ngOnInit() {
+      this.currentProjectName = this.router.url.split('/')[2]; // Last part of the URL is equal to the project name
       this.getEmployeeList();
       this.getFormControls();
       this.getProjectsList();
@@ -113,6 +114,17 @@
       this.risksArray = [];
       if (this.router.url !== '/edit/new') {
         // Load data
+    this.db.get(this.currentProjectName).then((doc) => {
+
+/*  This call should return a document that has fields id, description, projectManager, teamMembers, requirements, risks, and tasks
+     Example of assigning the description: this.generalInfo.controls.decription.setValue(doc.description);
+     Example of assigning the team members: this.teamMembers.setValue(doc.teamMembers)
+     To assign the risks and requirements, do a for loop over doc.requirements and 
+        doc.risks and add them to the array with the push method we've been doing before
+
+*/
+
+        }).catch(err => console.log(err));
       }
     }
 
@@ -249,7 +261,6 @@
               teamMembers: team,
               requirements: this.requirementsArray,
               risks: this.risksArray,
-
             };
           } else {
               console.log(err); // Catch other errors
@@ -263,7 +274,7 @@
             teamMembers: team,
             requirements: this.requirementsArray,
             risks: this.risksArray,
-            tasks: []
+            tasks: doc.tasks
           }).catch(err => console.log(err));
         }).catch(err => console.log(err));
 

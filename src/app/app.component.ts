@@ -11,7 +11,7 @@ import { Location } from '@angular/common';
 export class AppComponent implements OnInit {
   protected router: Router;
   protected location: Location;
-  title = 'project-management';
+  currentProjectName: string;
   employeeCount = 0;
   projects: any[];
   employees: any[];

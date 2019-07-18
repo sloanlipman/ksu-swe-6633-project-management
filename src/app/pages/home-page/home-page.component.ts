@@ -40,19 +40,21 @@ export class HomePage extends AppComponent implements OnInit {
   onSelectProject() {}
 
   editProject() {
-    const name = this.currentProject.value;
-    if (!name) {
-      this.promptForCreateProject();
-    } else {
-      this.router.navigateByUrl('/edit/' + name);
-    }  }
+    this.navigate('edit');
+  }
 
   updateProject() {
+    this.navigate('update');
+  }
+
+  navigate(page) {
     const name = this.currentProject.value;
     if (!name) {
       this.promptForCreateProject();
     } else {
-      this.router.navigateByUrl('/update/' + name);
+      this.currentProjectName = name;
+      console.log(this.currentProjectName);
+      this.router.navigateByUrl('/' + page + '/' + name);
     }
   }
 
