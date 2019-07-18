@@ -3,15 +3,24 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import PouchDB from 'pouchdb';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 
 export interface TaskData {
   name: string;
   description: string;
-  requirement: string[];
-  estimatedTime: number;
-  loggedTime: number;
-  remainingTime: number;
+  requirement: string;
+
+  estimatedRequirementsTime: number;
+  loggedRequirementsTime: number;
+  estimatedDesigningTime: number;
+  loggedDesigningTime: number;
+  estimatedCodingTime: number;
+  loggedCodingTime: number;
+  estimatedTestingTime: number;
+  loggedTestingTime: number;
+  estimatedManagementTime: number;
+  loggedManagementTime: number;
   assignedTo: string;
   areRequirementsCompleted: boolean;
   isDesigningCompleted: boolean;
@@ -26,12 +35,29 @@ export interface TaskData {
   styleUrls: ['./update-project-page.component.css']
 })
 export class AddTaskDialog {
+  taskForm: FormGroup = this.formBuilder.group({
+    name: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
+    requirement: new FormControl('', [Validators.required]),
+    estReqs: new FormControl('', [Validators.required]),
+    loggedReqs: new FormControl('', [Validators.required]),
+    estDesign: new FormControl('', [Validators.required]),
+    loggedDesign: new FormControl('', [Validators.required]),
+    estCode: new FormControl('', [Validators.required]),
+    loggedCode: new FormControl('', [Validators.required]),
+    estTest: new FormControl('', [Validators.required]),
+    loggedTest: new FormControl('', [Validators.required]),
+    estManagement: new FormControl('', [Validators.required]),
+    loggedManagement: new FormControl('', [Validators.required]),
+    assignedTo: new FormControl('', [Validators.required])
+  });
 
   constructor(
     public dialogRef: MatDialogRef<AddTaskDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: AddTaskDialog) {}
+    @Inject(MAT_DIALOG_DATA) public data: AddTaskDialog,
+    private formBuilder: FormBuilder) {}
 
-  onNoClick(): void {
+  onCancel(): void {
     this.dialogRef.close();
   }
 
@@ -44,7 +70,7 @@ export class AddTaskDialog {
 })
 export class UpdateProjectPage extends AppComponent implements OnInit {
   db: any;
-  tasksArray: any;
+  tasksList = [];
   constructor(
     public dialog: MatDialog,
     protected router: Router,
@@ -55,7 +81,6 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
 
   ngOnInit() {
     this.db = new PouchDB('pmonkey');
-
   }
 
   addTask() {
@@ -65,9 +90,16 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
         name: undefined,
         description: undefined,
         requirement: undefined,
-        estimatedTime: undefined,
-        loggedTime: undefined,
-        remainingTime: 0,
+        estimatedRequirementsTime: undefined,
+        loggedRequirementsTime: undefined,
+        estimatedDesigningTime: undefined,
+        loggedDesigningTime: undefined,
+        estimatedCodingTime: undefined,
+        loggedCodingTime: undefined,
+        estimatedTestingTime: undefined,
+        loggedTestingTime: undefined,
+        estimatedManagementTime: undefined,
+        loggedManagementTime: undefined,
         assignedTo: undefined,
         areRequirementsCompleted: false,
         isDesigningCompleted: false,
@@ -78,13 +110,20 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.tasksArray.push({
+      this.tasksList.push({
         name: result.name,
         description: result.description,
         requirement: result.requirement,
-        estimatedTime:  result.estimatedTime,
-        loggedTime: result.loggedTime,
-        remainingTime: 0,
+        estimatedRequirementsTime: result.estimatedRequirementsTime,
+        loggedRequirementsTime: result.loggedRequirementsTime,
+        estimatedDesigningTime: result.estimatedDesigningTime,
+        loggedDesigningTime: result.loggedDesigningTime,
+        estimatedCodingTime: result.estimatedCodingTime,
+        loggedCodingTime: result.loggedCodingTime,
+        estimatedTestingTime: result.estimatedTestingTime,
+        loggedTestingTime: result.estimatedTestingTime,
+        estimatedManagementTime: result.estimatedManagementTime,
+        loggedManagementTime: result.loggedManagementTime,
         assignedTo: result.assignedTo,
         areRequirementsCompleted: false,
         isDesigningCompleted: false,
@@ -92,8 +131,7 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
         isTestingCompleted: false,
         isTaskCompleted: false,
       });
-      // Push result to an array containing risks so that it will populate on the UI
-      console.log('after closed', result);
+      // TODO add to DB
     });
   }
 
@@ -104,9 +142,16 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
       name: task.name,
       description: task.description,
       requirement: task.requirement,
-      estimatedTime: task.estimatedTime,
-      loggedTime: task.loggedTime,
-      remainingTime: 0,
+      estimatedRequirementsTime: task.estimatedRequirementsTime,
+      loggedRequirementsTime: task.loggedRequirementsTime,
+      estimatedDesigningTime: task.estimatedDesigningTime,
+      loggedDesigningTime: task.loggedDesigningTime,
+      estimatedCodingTime: task.estimatedCodingTime,
+      loggedCodingTime: task.loggedCodingTime,
+      estimatedTestingTime: task.estimatedTestingTime,
+      loggedTestingTime: task.loggedTestingTime,
+      estimatedManagementTime: task.estimatedManagementTime,
+      loggedManagementTime: task.loggedManagementTime,
       assignedTo: task.assignedTo,
       areRequirementsCompleted: false,
       isDesigningCompleted: false,
@@ -115,5 +160,39 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
       isTaskCompleted: false,
     }
   });
+
+    dialogRef.afterClosed().subscribe(result => {
+      task = {
+        name: result.name,
+        description: result.description,
+        requirement: result.requirement,
+        estimatedRequirementsTime: result.estimatedRequirementsTime,
+        loggedRequirementsTime: result.loggeRequirementsTime,
+        estimatedDesigningTime: result.estimatedDesigningTime,
+        loggedDesigningTime: result.loggedDesigningTime,
+        estimatedCodingTime: result.estimatedCodingTime,
+        loggedCodingTime: result.loggedCodingTime,
+        estimatedTestingTime: result.estimatedTestingTime,
+        loggedTestingTime: result.estimatedTestingTime,
+        estimatedManagementTime: result.estimatedManagementTime,
+        loggedManagementTime: result.loggedManagementTime,
+        assignedTo: result.assignedTo,
+        areRequirementsCompleted: result.areRequirementsCompleted,
+        isDesigningCompleted: result.isDesigningCompleted,
+        isCodingCompleted: result.isCodingCompleted,
+        isTestingCompleted: result.isTestingCompleted,
+        isresultCompleted: result.isTaskCompleted,
+      };
+    });
+    // TODO update DB
   }
+
+  deleteTask(task) {
+    const index = this.tasksList.indexOf(task);
+    this.tasksList.splice(index, 1);
+    // TODO delete from DB
+  }
+
+  // TODO mark phases as complete
+  // TODO mark entire tasks as complete
 }

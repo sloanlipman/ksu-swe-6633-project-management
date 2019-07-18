@@ -43,13 +43,15 @@
       <mat-list-item>
         <div class="column">Name</div>
         <div class="column">Description</div>
+        <div class="column">Likelihood</div>
       </mat-list-item>
       <mat-list-item *ngFor="let risk of risksArray">
         <div class="column">{{risk.name}}</div>
         <div class="column">{{risk.description}}</div>
+        <div class="column">{{risk.likelihood}}</div>
         <div class="inner-buttons">
           <button mat-raised-button class="edit"(click)="editRisk(risk)">Edit</button>
-          <button mat-raised-button class="delete">Delete</button>
+          <button mat-raised-button class="delete" (click)="deleteRisk(risk)">Delete</button>
       </div>
       </mat-list-item>
       </mat-list>
