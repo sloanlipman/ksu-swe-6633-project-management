@@ -19,7 +19,7 @@ export class AddEmployeeDialog {
     public dialogRef: MatDialogRef<AddEmployeeDialog>,
     @Inject(MAT_DIALOG_DATA) public data: AddEmployeeDialog) {}
 
-  onNoClick(): void {
+  onCancel(): void {
     this.dialogRef.close();
   }
 }
