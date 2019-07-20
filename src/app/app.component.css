@@ -5,3 +5,7 @@ mat-toolbar {
 .header-button {
   background: none;
 }
+
+#projectName {
+  color: black;
+}

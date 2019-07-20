@@ -3,6 +3,7 @@ import { AppComponent } from 'src/app/app.component';
 import PouchDB from 'pouchdb';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 export interface EmployeeDataDialog {
   name: string;
@@ -14,10 +15,15 @@ export interface EmployeeDataDialog {
 })
 export class AddEmployeeDialog {
     name: any;
+    newEmployeeForm: FormGroup = this.formBuilder.group({
+      name: new FormControl('', [Validators.required])
+    });
 
   constructor(
     public dialogRef: MatDialogRef<AddEmployeeDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: AddEmployeeDialog) {}
+    @Inject(MAT_DIALOG_DATA) public data: AddEmployeeDialog,
+    private formBuilder: FormBuilder) {}
+
 
   onCancel(): void {
     this.dialogRef.close();
@@ -61,7 +67,8 @@ export class ManageEmployeesPage extends AppComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(newName => { // Subscribe to the name entered in the Dialog
+    dialogRef.afterClosed().subscribe(result => { // Subscribe to the name entered in the Dialog
+      const newName = result.get('name').value;
       this.db.get('employees').then((doc) => { // Get the employee document
         const empList = doc.employees; // Get the list of employees from the document
         let existingEmployee = false;
@@ -73,7 +80,6 @@ export class ManageEmployeesPage extends AppComponent implements OnInit {
           }
         });
 
-    // TODO check if newName is > 0 characters
     // If the employee is a new name, add it to the list
         if (!existingEmployee)  {
           empList.push(newName); // Add the new employee name to the document
@@ -85,7 +91,7 @@ export class ManageEmployeesPage extends AppComponent implements OnInit {
 
       // Otherwise, notify the user that the employee was already there!
        } else {
-        this.snackBar.open('Employee already exists', '', { // Display error to the user
+        this.snackBar.open('Employee already exists!', '', { // Display error to the user
           duration: 3000,
           verticalPosition: 'top',
         });
