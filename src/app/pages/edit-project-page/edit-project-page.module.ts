@@ -10,7 +10,7 @@ import { EditProjectPage, AddRiskDialog, AddRequirementDialog } from './edit-pro
   declarations: [
     EditProjectPage,
     AddRiskDialog,
-    AddRequirementDialog
+    AddRequirementDialog,
   ],
   imports: [
     AppMaterialModule,
@@ -29,7 +29,7 @@ import { EditProjectPage, AddRiskDialog, AddRequirementDialog } from './edit-pro
   ],
   entryComponents: [
     AddRiskDialog,
-    AddRequirementDialog
+    AddRequirementDialog,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

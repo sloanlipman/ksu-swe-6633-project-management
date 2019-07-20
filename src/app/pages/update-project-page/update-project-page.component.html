@@ -17,13 +17,13 @@
   <mat-list>
     <mat-list-item>
       <div class="column1">Phase</div>
-      <div class="column">Estimated<br/>Time</div>
-      <div class="column">Logged<br/>Time</div>
+      <div class="column">Estimated<br/></div>
+      <div class="column">Logged<br/></div>
     </mat-list-item>
     <mat-list-item>
       <div class="phaseColumn">Requirements Analysis</div>
-      <div class="estimated">{{task.estimatedRequirementsTime}}</div>
-      <div class="logged">{{task.loggedRequirementsTime}}</div>
+      <div class="estimated">{{task.estReqs}}</div>
+      <div class="logged">{{task.loggedReqs}}</div>
       <div class="inner-buttons">
         <button class="complete" mat-raised-button>Mark as Done</button>
       </div>
@@ -31,8 +31,8 @@
 
   <mat-list-item>
     <div class="phaseColumn">Designing<br/></div>
-    <div class="estimated">{{task.estimatedDesigningTime}}</div>
-    <div class="logged">{{task.loggedDesigningTime}}</div>
+    <div class="estimated">{{task.estDesign}}</div>
+    <div class="logged">{{task.loggedDesign}}</div>
     <div class="inner-buttons">
       <button class="complete" mat-raised-button>Mark as Done</button>
     </div>
@@ -40,8 +40,8 @@
 
   <mat-list-item>
     <div class="phaseColumn">Coding<br/></div>
-    <div class="estimated">{{task.estimatedCodingTime}}</div>
-    <div class="logged">{{task.loggedCodingTime}}</div>
+    <div class="estimated">{{task.estCode}}</div>
+    <div class="logged">{{task.loggedCode}}</div>
     <div class="inner-buttons">
       <button class="complete" mat-raised-button>Mark as Done</button>
     </div>
@@ -49,8 +49,8 @@
 
   <mat-list-item>
     <div class="phaseColumn">Testing<br/></div>
-    <div class="estimated">{{task.estimatedTestingTime}}</div>
-    <div class="logged">{{task.loggedTestingTime}}</div>
+    <div class="estimated">{{task.estTest}}</div>
+    <div class="logged">{{task.loggedTest}}</div>
     <div class="inner-buttons">
       <button class="complete" mat-raised-button>Mark as Done</button>
     </div>
@@ -58,8 +58,8 @@
 
     <mat-list-item>
       <div class="phaseColumn">Project Management<br/></div>
-      <div class="estimated">{{task.estimatedManagmentTime}}</div>
-      <div class="logged">{{task.loggedManagementTime}}</div>
+      <div class="estimated">{{task.estManagement}}</div>
+      <div class="logged">{{task.loggedManagement}}</div>
       <div class="inner-buttons">
         <button class="complete" mat-raised-button>Mark as Done</button>
       </div>

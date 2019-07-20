@@ -8,7 +8,7 @@
         <input matInput formControlName="riskDescription" placeholder="Description" required [(ngModel)]="data.description">
     </mat-form-field>
     <mat-form-field id="likelihood">
-      <input matInput type="number" min="0.1" max="99.9" formControlName="riskLikelihood" 
+      <input matInput type="number" min="1" max="99" formControlName="riskLikelihood" 
       placeholder="Likelihood the risk will occur (%)" required [(ngModel)]="data.likelihood"
       (keyup)="validateLikelihood()">
     </mat-form-field>

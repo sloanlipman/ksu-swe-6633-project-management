@@ -1,5 +1,5 @@
 <mat-form-field>
-  <mat-select [formControl]="currentProject">
+  <mat-select [formControl]="currentProjectForm">
     <mat-label>Ongoing Projects</mat-label>
     <mat-option *ngFor="let project of projects" [value] = project>
       {{project}}
@@ -26,28 +26,6 @@
     <p>
       The home page will also display an overview of current project status by providing details about how much time has been spent in each phase of the project and how much time is remaining.
     </p>
-    <!-- <form>
-        <mat-form-field id="firstName">
-          <input matInput placeholder="First Name" type="text" formControlName="firstName" required
-            class="form-control" [ngClass]=" { 'is-invalid': submitted && f.firstName.errors}" >
-        </mat-form-field>
-        <mat-form-field id="lastName">
-          <input matInput placeholder="Last Name" type="text" formControlName="lastName" required
-            class="form-control" [ngClass]=" { 'is-invalid': submitted && f.lastName.errors}" >
-        </mat-form-field>
-        <mat-form-field id="age">
-          <input matInput placeholder="Age" type="text" formControlName="age" required
-          class="form-control" [ngClass]=" { 'is-invalid': submitted && f.age.errors}" >
-        </mat-form-field>
-        <mat-form-field id="zip">
-          <input matInput placeholder="ZIP Code" type="text" formControlName="zip" required
-          class="form-control" [ngClass]=" { 'is-invalid': submitted && f.zip.errors}">
-        </mat-form-field>
-        <mat-form-field id="email">
-          <input matInput placeholder="E-mail Address" type="text" formControlName="email" required
-          class="form-control" [ngClass]=" { 'is-invalid': submitted && f.email.errors}">
-        </mat-form-field>
-    </form>    -->
    </mat-grid-tile>
     <mat-grid-tile class="dummy" colspan="1" rowspan="1.5"></mat-grid-tile>
 </mat-grid-list>

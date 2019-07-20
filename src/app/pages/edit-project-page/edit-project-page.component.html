@@ -6,11 +6,11 @@
 <mat-grid-list cols="8" rowHeight="20rem" [gutterSize]="'15px'">
   <mat-grid-tile colspan="2" rowspan="1.5" id="information">
 
-      <mat-grid-tile-header>Name and Description</mat-grid-tile-header>
+      <mat-grid-tile-header>Name and Description</mat-grid-tile-header><br/>
+        <div class="project-name-container">Project Name:
+        <input readonly class="project-name" [(ngModel)]="currentProjectName"/> <br/>
+      </div>
       <form [formGroup]="generalInfo">
-        <mat-form-field id="project-name">
-          <input matInput placeholder="Name of Project" type="text" formControlName="projectName" required class="form-control">
-        </mat-form-field><br/>
         <mat-form-field id="project-description">
           <div class="gridBody">
             <textarea matInput placeholder="Description" formControlName="projectDescription" class="form-control" id="description-text"></textarea>
@@ -45,7 +45,7 @@
         <div class="column">Description</div>
         <div class="column">Likelihood</div>
       </mat-list-item>
-      <mat-list-item *ngFor="let risk of risksArray">
+      <mat-list-item *ngFor="let risk of risksArray" class="individual-risk">
         <div class="column">{{risk.name}}</div>
         <div class="column">{{risk.description}}</div>
         <div class="column">{{risk.likelihood}}</div>
@@ -63,22 +63,20 @@
     <br/><br/>
     <button mat-raised-button class="add" (click)="addRequirement()">Add New Requirement</button>
     <mat-list>
-        <mat-list-item>
-            <div class="column">Name</div>
-            <div class="column">Category</div>
-            <div class="column">Description</div>
-            <div class="column">Priority</div>
-        </mat-list-item>
+      <mat-list-item>
+          <div class="column">Name</div>
+          <div class="column">Category</div>
+          <div class="column">Description</div>
+          <div class="column">Priority</div>
+      </mat-list-item>
 
       <mat-list-item *ngFor="let req of requirementsArray">
-          <div class="column">{{req.name}}</div>
-          <div class="column">{{req.category}}</div>
-          <div class="column">{{req.description}}</div>
-          <div class="column">{{req.priority}}</div>
-          <div class="inner-buttons">
-
-            <button mat-raised-button class="edit"(click)="editRequirement(req)">Edit</button>
-            <button mat-raised-button class="delete" (click)="deleteRequirement(req)">Delete</button>
+        <div class="column">{{req.name}}</div>
+        <div class="column">{{req.category}}</div>
+        <div class="column">{{req.description}}</div>
+        <div class="inner-buttons">
+          <button mat-raised-button class="edit"(click)="editRequirement(req)">Edit</button>
+          <button mat-raised-button class="delete" (click)="deleteRequirement(req)">Delete</button>
         </div>
       </mat-list-item>
 
