@@ -1,10 +1,12 @@
 <h1 mat-dialog-title>Employee</h1>
 <div mat-dialog-content>
+  <mat-form [formGroup]="newEmployeeForm">
   <mat-form-field>
-    <input matInput placeholder="Name" required [(ngModel)]="data.name">
+    <input matInput placeholder="Name" required formControlName="name">
   </mat-form-field>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Save</button>
+    <div mat-dialog-actions>
+      <button mat-button (click)="onCancel()">Cancel</button>
+      <button mat-button [mat-dialog-close]="newEmployeeForm" [disabled]="newEmployeeForm.invalid">Save</button>
+    </div>
+  </mat-form>
 </div>

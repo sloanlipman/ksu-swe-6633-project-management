@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-import { AppComponent, NewProjectDialog } from './app.component';
+import { AppComponent } from './app.component';
 import { AppMaterialModule } from './app-material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -11,8 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    NewProjectDialog
+    AppComponent
   ],
   imports: [
     AppMaterialModule,
@@ -27,6 +26,5 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],
-  entryComponents: [NewProjectDialog]
 })
 export class AppModule { }

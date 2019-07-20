@@ -4,11 +4,12 @@ import { RouterModule } from '@angular/router';
 import { AppMaterialModule } from 'src/app/app-material.module';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HomePage } from './home-page.component';
+import { HomePage, NewProjectDialog } from './home-page.component';
 
 @NgModule({
   declarations: [
-    HomePage
+    HomePage,
+    NewProjectDialog
   ],
   imports: [
     AppMaterialModule,
@@ -24,6 +25,7 @@ import { HomePage } from './home-page.component';
   exports: [
     HomePage
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  entryComponents: [NewProjectDialog]
 })
 export class HomePageModule{}
