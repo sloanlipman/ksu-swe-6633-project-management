@@ -1,32 +1,35 @@
 import { Component, OnInit, Inject, Injector } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import PouchDB from 'pouchdb';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-
+import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { Project } from 'src/app/project-model';
 
 export interface TaskData {
   name: string;
   description: string;
   requirement: string;
 
-  estimatedRequirementsTime: number;
-  loggedRequirementsTime: number;
-  estimatedDesigningTime: number;
-  loggedDesigningTime: number;
-  estimatedCodingTime: number;
-  loggedCodingTime: number;
-  estimatedTestingTime: number;
-  loggedTestingTime: number;
-  estimatedManagementTime: number;
-  loggedManagementTime: number;
+  estReqs: number;
+  loggedReqs: number;
+  estDesign: number;
+  loggedDesign: number;
+  estCode: number;
+  loggedCode: number;
+  estTest: number;
+  loggedTest: number;
+  estManagement: number;
+  loggedManagement: number;
   assignedTo: string;
   areRequirementsCompleted: boolean;
   isDesigningCompleted: boolean;
   isCodingCompleted: boolean;
   isTestingCompleted: boolean;
   isTaskCompleted: boolean;
+
+  teamList: string[];
+  requirementsList: string[];
 }
 
 @Component({
@@ -52,13 +55,37 @@ export class AddTaskDialog {
     assignedTo: new FormControl('', [Validators.required])
   });
 
+  requirementsFormArray: FormArray = this.formBuilder.array([]);
+
   constructor(
     public dialogRef: MatDialogRef<AddTaskDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: AddTaskDialog,
-    private formBuilder: FormBuilder) {}
+    @Inject(MAT_DIALOG_DATA) public data: TaskData,
+    private formBuilder: FormBuilder) {
+      console.log('Received data', data);
+      this.loadData(data);
+    }
 
   onCancel(): void {
     this.dialogRef.close();
+  }
+
+  loadData(data?: any): void {
+    if (data) {
+      this.taskForm.controls.name.setValue(data.name);
+      this.taskForm.controls.description.setValue(data.description);
+      this.taskForm.controls.requirement.setValue(data.requirement);
+      this.taskForm.controls.estReqs.setValue(data.estReqs);
+      this.taskForm.controls.loggedReqs.setValue(data.loggedReqs);
+      this.taskForm.controls.estDesign.setValue(data.estDesign);
+      this.taskForm.controls.loggedDesign.setValue(data.loggedDesign);
+      this.taskForm.controls.estCode.setValue(data.estCode);
+      this.taskForm.controls.loggedCode.setValue(data.loggedCode);
+      this.taskForm.controls.estTest.setValue(data.estTest);
+      this.taskForm.controls.loggedTest.setValue(data.loggedTest);
+      this.taskForm.controls.estManagement.setValue(data.estManagement);
+      this.taskForm.controls.loggedManagement.setValue(data.loggedManagement);
+      this.taskForm.controls.assignedTo.setValue(data.assignedTo);
+    }
   }
 
 }
@@ -70,17 +97,51 @@ export class AddTaskDialog {
 })
 export class UpdateProjectPage extends AppComponent implements OnInit {
   db: any;
-  tasksList = [];
+  teamList: any[] = [];
+  requirementsList: any[] = [];
+  currentProjectName: string;
+  currentProject: Project;
+  tasksList: any[] = [];
   constructor(
     public dialog: MatDialog,
     protected router: Router,
-    protected injector: Injector
+    protected injector: Injector,
+    protected snackBar: MatSnackBar
   ) {
-    super(injector);
+    super(injector, router, snackBar, dialog);
   }
 
-  ngOnInit() {
+   ngOnInit() {
     this.db = new PouchDB('pmonkey');
+    this.currentProjectName = this.router.url.split('/')[2]; // Last part of the URL is equal to the project name
+    this.loadProject();
+  }
+
+  loadProject(): void {
+    this.db.get(this.currentProjectName).then((doc) => {
+      console.log(doc);
+      doc.tasks.forEach(task => {
+        this.tasksList.push(task);
+      });
+
+      doc.teamMembers.forEach(emp => {
+        this.teamList.push(emp);
+      });
+
+      doc.requirements.forEach(req => {
+        this.requirementsList.push(req.name);
+      });
+
+      this.currentProject = new Project({
+        id: this.currentProjectName,
+        description: doc.description,
+        projectManager: doc.projectManager,
+        teamMembers: doc.teamMembers,
+        requirements: doc.requirements,
+        risks: doc.risks,
+        tasks: doc.tasks
+      });
+    }).catch(err => console.log(err));
   }
 
   addTask() {
@@ -90,107 +151,111 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
         name: undefined,
         description: undefined,
         requirement: undefined,
-        estimatedRequirementsTime: undefined,
-        loggedRequirementsTime: undefined,
-        estimatedDesigningTime: undefined,
-        loggedDesigningTime: undefined,
-        estimatedCodingTime: undefined,
-        loggedCodingTime: undefined,
-        estimatedTestingTime: undefined,
-        loggedTestingTime: undefined,
-        estimatedManagementTime: undefined,
-        loggedManagementTime: undefined,
+        estReqs: undefined,
+        loggedReqs: undefined,
+        estDesign: undefined,
+        loggedDesign: undefined,
+        estCode: undefined,
+        loggedCode: undefined,
+        estTest: undefined,
+        loggedTest: undefined,
+        estManagement: undefined,
+        loggedManagement: undefined,
         assignedTo: undefined,
         areRequirementsCompleted: false,
         isDesigningCompleted: false,
         isCodingCompleted: false,
         isTestingCompleted: false,
         isTaskCompleted: false,
+        teamList: this.teamList,
+        requirementsList: this.requirementsList
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+
+    dialogRef.afterClosed().subscribe(async (result) => {
       this.tasksList.push({
-        name: result.name,
-        description: result.description,
-        requirement: result.requirement,
-        estimatedRequirementsTime: result.estimatedRequirementsTime,
-        loggedRequirementsTime: result.loggedRequirementsTime,
-        estimatedDesigningTime: result.estimatedDesigningTime,
-        loggedDesigningTime: result.loggedDesigningTime,
-        estimatedCodingTime: result.estimatedCodingTime,
-        loggedCodingTime: result.loggedCodingTime,
-        estimatedTestingTime: result.estimatedTestingTime,
-        loggedTestingTime: result.estimatedTestingTime,
-        estimatedManagementTime: result.estimatedManagementTime,
-        loggedManagementTime: result.loggedManagementTime,
-        assignedTo: result.assignedTo,
+        name: result.get('name').value,
+        description: result.get('description').value,
+        requirement: result.get('requirement').value,
+        estReqs: result.get('estReqs').value,
+        loggedReqs: result.get('loggedReqs').value,
+        estDesign: result.get('estDesign').value,
+        loggedDesign: result.get('loggedDesign').value,
+        estCode: result.get('estCode').value,
+        loggedCode: result.get('loggedCode').value,
+        estTest: result.get('estTest').value,
+        loggedTest: result.get('loggedTest').value,
+        estManagement: result.get('estManagement').value,
+        loggedManagement: result.get('loggedManagement').value,
+        assignedTo: result.get('assignedTo').value,
         areRequirementsCompleted: false,
         isDesigningCompleted: false,
         isCodingCompleted: false,
         isTestingCompleted: false,
         isTaskCompleted: false,
       });
-      // TODO add to DB
+      this.currentProject.tasks = this.tasksList;
+      this.saveProject(this.currentProject);
     });
   }
 
   editTask(task){
+    const oldTask =  this.tasksList[this.tasksList.indexOf(task)];
     const dialogRef = this.dialog.open(AddTaskDialog, {
     width: '600px',
     data: {
       name: task.name,
       description: task.description,
       requirement: task.requirement,
-      estimatedRequirementsTime: task.estimatedRequirementsTime,
-      loggedRequirementsTime: task.loggedRequirementsTime,
-      estimatedDesigningTime: task.estimatedDesigningTime,
-      loggedDesigningTime: task.loggedDesigningTime,
-      estimatedCodingTime: task.estimatedCodingTime,
-      loggedCodingTime: task.loggedCodingTime,
-      estimatedTestingTime: task.estimatedTestingTime,
-      loggedTestingTime: task.loggedTestingTime,
-      estimatedManagementTime: task.estimatedManagementTime,
-      loggedManagementTime: task.loggedManagementTime,
+      estReqs: task.estReqs,
+      loggedReqs: task.loggedReqs,
+      estDesign: task.estDesign,
+      loggedDesign: task.loggedDesign,
+      estCode: task.estCode,
+      loggedCode: task.loggedCode,
+      estTest: task.estTest,
+      loggedTest: task.loggedTest,
+      estManagement: task.estManagement,
+      loggedManagement: task.loggedManagement,
       assignedTo: task.assignedTo,
       areRequirementsCompleted: false,
       isDesigningCompleted: false,
       isCodingCompleted: false,
       isTestingCompleted: false,
       isTaskCompleted: false,
+      teamList: this.teamList,
+      requirementsList: this.requirementsList
     }
   });
-
     dialogRef.afterClosed().subscribe(result => {
-      task = {
-        name: result.name,
-        description: result.description,
-        requirement: result.requirement,
-        estimatedRequirementsTime: result.estimatedRequirementsTime,
-        loggedRequirementsTime: result.loggeRequirementsTime,
-        estimatedDesigningTime: result.estimatedDesigningTime,
-        loggedDesigningTime: result.loggedDesigningTime,
-        estimatedCodingTime: result.estimatedCodingTime,
-        loggedCodingTime: result.loggedCodingTime,
-        estimatedTestingTime: result.estimatedTestingTime,
-        loggedTestingTime: result.estimatedTestingTime,
-        estimatedManagementTime: result.estimatedManagementTime,
-        loggedManagementTime: result.loggedManagementTime,
-        assignedTo: result.assignedTo,
-        areRequirementsCompleted: result.areRequirementsCompleted,
-        isDesigningCompleted: result.isDesigningCompleted,
-        isCodingCompleted: result.isCodingCompleted,
-        isTestingCompleted: result.isTestingCompleted,
-        isresultCompleted: result.isTaskCompleted,
-      };
+      oldTask.name = result.get('name').value;
+      oldTask.description = result.get('description').value;
+      oldTask.requirement = result.get('requirement').value;
+      oldTask.estReqs = result.get('estReqs').value;
+      oldTask.loggedReqs = result.get('loggedReqs').value;
+      oldTask.estDesign = result.get('estDesign').value;
+      oldTask.loggedDesign = result.get('loggedDesign').value;
+      oldTask.estCode = result.get('estCode').value;
+      oldTask.loggedCode = result.get('loggedCode').value;
+      oldTask.estTest = result.get('estTest').value;
+      oldTask.loggedTest = result.get('loggedTest').value;
+      oldTask.estManagement = result.get('estManagement').value;
+      oldTask.loggedManagement = result.get('loggedManagement').value;
+      oldTask.assignedTo = result.get('assignedTo').value;
+      this.currentProject.tasks = this.tasksList;
+      this.saveProject(this.currentProject);
     });
-    // TODO update DB
+
   }
 
   deleteTask(task) {
     const index = this.tasksList.indexOf(task);
     this.tasksList.splice(index, 1);
-    // TODO delete from DB
+    this.currentProject.tasks = this.tasksList;
+    this.saveProject(this.currentProject);
+
+
   }
 
   // TODO mark phases as complete

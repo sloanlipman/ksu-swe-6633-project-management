@@ -32,13 +32,14 @@ export class AddEmployeeDialog {
 
 export class ManageEmployeesPage extends AppComponent implements OnInit {
   db: any;
+  employeesList: any[] = [];
   constructor(
-    public dialog: MatDialog,
+    protected dialog: MatDialog,
     protected router: Router,
     protected injector: Injector,
-    public snackBar: MatSnackBar
+    protected snackBar: MatSnackBar
   ) {
-    super(injector);
+    super(injector, router, snackBar, dialog);
   }
 
   ngOnInit() {

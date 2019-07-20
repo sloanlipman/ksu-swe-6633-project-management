@@ -2,85 +2,79 @@
 <div mat-dialog-content>
   <mat-form [formGroup]="taskForm">
     <mat-form-field>
-      <input matInput formControlName="name" placeholder="Name" required [(ngModel)]="data.name">
+      <input matInput formControlName="name" placeholder="Name" required>
     </mat-form-field>
     <mat-form-field>
-        <mat-label>Associated Requirement</mat-label>
-        <mat-select required formControlName="requirement" [(ngModel)]="data.requirement">
-          <mat-option>R1</mat-option>
-          <mat-option>R2</mat-option>
-          <!-- Use *ngFor for the mat-options instead -->
-        </mat-select>
+      <mat-label>Associated Requirement</mat-label>
+      <mat-select required formControlName="requirement">
+          <mat-option *ngFor="let req of data.requirementsList" [value]="req">{{req}}</mat-option>
+      </mat-select>
     </mat-form-field>
     
     <mat-form-field>
         <mat-label>Assigned To</mat-label>
-        <mat-select required formControlName="assignedTo" [(ngModel)]="data.team">
-          <mat-option>Selina Kyle</mat-option>
-          <mat-option>Bruce Wayne</mat-option>
-          <!-- Use *ngFor for the mat-options instead -->
+        <mat-select required formControlName="assignedTo">
+          <mat-option *ngFor="let teamMember of data.teamList" [value]="teamMember">{{teamMember}}</mat-option>
+
         </mat-select>
     </mat-form-field>
     <br/>
     <mat-form-field>
-        <textarea style="height:200px;" formControlName="description" matInput placeholder=" Description" required [(ngModel)]="data.description"></textarea>
+        <textarea style="height:200px;" formControlName="description" matInput placeholder=" Description" required></textarea>
     </mat-form-field>
-
 
     <div>
       <mat-label class="category">Requirements Analysis</mat-label>
       <mat-form-field>
-          <input matInput formControlName="estReqs" type="number" min="1" placeholder="Estimated Time" required [(ngModel)]="data.estimatedRequirementsTime">
+          <input matInput formControlName="estReqs" type="number" min="1" placeholder="Estimated Time" required>
       </mat-form-field>
       <mat-form-field>
-          <input matInput formControlName="loggedReqs" type="number" min="1" placeholder="Logged Time" required [(ngModel)]="data.loggedRequirementsTime">
+          <input matInput formControlName="loggedReqs" type="number" min="1" placeholder="Logged Time" required>
       </mat-form-field>
     </div>
 
     <div>Designing
       <mat-form-field>
-          <input matInput formControlName="estDesign" type="number" min="1" placeholder="Estimated Time" required [(ngModel)]="data.estimatedDesigningTime">
+          <input matInput formControlName="estDesign" type="number" min="1" placeholder="Estimated Time" required>
       </mat-form-field>
       <mat-form-field>
-          <input matInput formControlName="loggedDesign" type="number" min="1" placeholder="Logged Time" required [(ngModel)]="data.loggedDesigningTime">
+          <input matInput formControlName="loggedDesign" type="number" min="1" placeholder="Logged Time" required>
       </mat-form-field>
     </div>
 
     <div>
       <mat-label class="category">Coding</mat-label>
       <mat-form-field>
-          <input matInput formControlName="estCode" type="number" min="1" placeholder="Estimated Time" required [(ngModel)]="data.estimatedCodingTime">
+          <input matInput formControlName="estCode" type="number" min="1" placeholder="Estimated Time" required>
       </mat-form-field>
       <mat-form-field>
-          <input matInput formControlName="loggedCode" type="number" min="1" placeholder="Logged Time" required [(ngModel)]="data.loggedCodingTime">
+          <input matInput formControlName="loggedCode" type="number" min="1" placeholder="Logged Time" required>
       </mat-form-field>
     </div>
 
-    <div>Testing
+    <div>
       <mat-label class="category">Testing</mat-label>
       <mat-form-field>
-          <input matInput formControlName="estTest" type="number" min="1" placeholder="Estimated Time" required [(ngModel)]="data.estimatedTestingTime">
+          <input matInput formControlName="estTest" type="number" min="1" placeholder="Estimated Time" required>
       </mat-form-field>
       <mat-form-field>
-          <input matInput formControlName="loggedTest"type="number" min="1" placeholder="Logged Time" required [(ngModel)]="data.loggedTestingTime">
+          <input matInput formControlName="loggedTest"type="number" min="1" placeholder="Logged Time" required>
       </mat-form-field>
     </div>
 
     <div>
       <mat-label class="category">Project Management</mat-label>
       <mat-form-field>
-          <input matInput formControlName="estManagement" type="number" min="1" placeholder="Estimated Time" required [(ngModel)]="data.estimatedManagementTime">
+          <input matInput formControlName="estManagement" type="number" min="1" placeholder="Estimated Time" required>
       </mat-form-field>
       <mat-form-field>
-          <input matInput formControlName="loggedManagement" type="number" min="1" placeholder="Logged Time" required [(ngModel)]="data.loggedManagementTime">
+          <input matInput formControlName="loggedManagement" type="number" min="1" placeholder="Logged Time" required>
       </mat-form-field>
     </div>
   
-
-
     <div mat-dialog-actions>
       <button mat-button (click)="onCancel()">Cancel</button>
-      <button mat-button [mat-dialog-close]="data">Save</button>
+      <button mat-button [mat-dialog-close]="taskForm" [disabled]="taskForm.invalid">Save</button>
     </div>
   </mat-form>
 </div>

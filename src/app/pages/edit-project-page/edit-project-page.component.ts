@@ -1,14 +1,15 @@
-  import { Component, OnInit, ɵCompiler_compileModuleSync__POST_R3__, Inject, Injector } from '@angular/core';
+  import { Component, OnInit, Inject, Injector, EventEmitter, Output } from '@angular/core';
   import { AppComponent } from 'src/app/app.component';
   import PouchDB from 'pouchdb';
   import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
   import { Router } from '@angular/router';
   import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+  import { Project } from '../../project-model';
 
   export interface RiskDialogData {
     name: string;
     description: string;
-    likelihood: number;
+    likelihood: any;
   }
 
   export interface RequirementDialogData {
@@ -20,10 +21,10 @@
 
 
   @Component({
-    selector: 'add-risk',
     templateUrl: 'add-risk.html',
     styleUrls: ['./edit-project-page.component.css']
   })
+
   export class AddRiskDialog {
     riskDialogForm: FormGroup = this.formBuilder.group({
       riskName: new FormControl('', [Validators.required]),
@@ -42,20 +43,19 @@
     }
 
     validateLikelihood() {
-      if (this.data.likelihood > 99.9 || this.data.likelihood < 0.1) {
-        this.data.likelihood = null;
-        this.snackBar.open('Likelihood must be between 0.1% and 99.9%', '', { // Display a success message to the user!
+      const chance = this.riskDialogForm.get('riskLikelihood').value;
+      if (chance >= 100 || chance <= 0) {
+        this.riskDialogForm.controls.riskLikelihood.setValue(null);
+        this.snackBar.open('Likelihood must be between 1% and 99%', '', { // Display a success message to the user!
           duration: 3000,
           verticalPosition: 'top',
         });
       }
-
     }
   }
 
 
   @Component({
-    selector: 'add-requirement',
     templateUrl: 'add-requirement.html',
     styleUrls: ['./edit-project-page.component.css']
   })
@@ -71,7 +71,6 @@
       public dialogRef: MatDialogRef<AddRequirementDialog>,
       @Inject(MAT_DIALOG_DATA) public data: RequirementDialogData,
       private formBuilder: FormBuilder,
-      private snackBar: MatSnackBar
       ) {}
 
     onCancel(): void {
@@ -79,7 +78,6 @@
     }
 
   }
-
   @Component({
     selector: 'edit-project-page',
     templateUrl: './edit-project-page.component.html',
@@ -91,66 +89,86 @@
     generalInfo: FormGroup;
     teamMembers: FormControl;
     projectManager: FormControl;
-    requirementsArray: any[];
-    risksArray: any[];
+    requirementsArray: any[] = [];
+    risksArray: any[] = [];
     currentProjectName: string;
 
     constructor(
-      public dialog: MatDialog,
+      protected dialog: MatDialog,
       protected router: Router,
       protected injector: Injector,
       private formBuilder: FormBuilder,
-      public snackBar: MatSnackBar
+      protected snackBar: MatSnackBar
     ) {
-      super(injector);
+      super(injector, router, snackBar, dialog);
     }
 
-    ngOnInit() {
-      this.currentProjectName = this.router.url.split('/')[2]; // Last part of the URL is equal to the project name
+  ngOnInit() {
+      this.db = new PouchDB('pmonkey');
       this.getEmployeeList();
       this.getFormControls();
       this.getProjectsList();
-      this.requirementsArray = [];
-      this.risksArray = [];
-      if (this.router.url !== '/edit/new') {
-        // Load data
-      this.loadProject();
-      }
+      this.getProject();
     }
 
     loadProject(): void {
       this.db.get(this.currentProjectName).then((doc) => {
-        this.generalInfo.controls.projectName.setValue(doc.id);
+        console.log('project is', doc);
         this.generalInfo.controls.projectDescription.setValue(doc.description);
         this.teamMembers.setValue(doc.teamMembers);
         this.projectManager.setValue(doc.projectManager);
 
         for (const risk of doc.risks) {
-            this.risksArray.push(risk);
-            }
+          this.risksArray.push(risk);
+        }
 
         for (const req of doc.requirements) {
-              this.requirementsArray.push(req);
-              }
-          }).catch(err => console.log(err));
+          this.requirementsArray.push(req);
+        }
+
+        this.currentProject = new Project({
+          id: this.currentProjectName,
+          description: doc.description,
+          projectManager: doc.projectManager,
+          teamMembers: doc.teamMembers,
+          requirements: doc.requirements,
+          risks: doc.risks,
+          tasks: doc.tasks
+        });
+
+      }).catch(err => console.log(err));
     }
 
-    getEmployeeList() {
-      this.db = new PouchDB('pmonkey');
-      this.db.get('employees').then((doc) => {
-        this.employeesList = doc.employees;
-      }).catch(err => console.log(err));
+    getProject() {
+
+      console.log('getting project');
+      const name = this.router.url.split('/')[2]; // Last part of the URL is equal to the project name
+      if (name === 'new') {
+       } else {
+        this.currentProjectName = name;
+        this.loadProject();
+      }
     }
 
     getFormControls() {
       this.generalInfo = this.formBuilder.group({
-        projectName: new FormControl('', [Validators.required]),
         projectDescription: new FormControl('', [Validators.required]),
       });
       this.teamMembers = new FormControl();
       this.projectManager = new FormControl(); // TODO can project manager also be on the team? Should it auto select, auto-deselect?3
                                                 // "On the team" means you can assign work to them, then yes.
                                                 // Otherwise, can only get PM duties?
+    }
+
+    getEmployeeList(): any {
+      const employees = [];
+      this.db.get('employees').then((doc) => {
+        doc.employees.forEach(employee => {
+          console.log(employee);
+          employees.push(employee);
+        });
+      }).catch(err => console.log(err));
+      this.employeesList = employees;
     }
 
     compare(c1: any, c2: any) {
@@ -251,71 +269,25 @@
     }
 
     save() {
-      const id = this.f.projectName.value;
+      const id = this.currentProjectName;
       const desc = this.f.projectDescription.value;
       const team = this.teamMembers.value;
       const manager = this.projectManager.value;
-      // Step 1: Create a document for this project
+      const reqs = this.requirementsArray;
+      const risks = this.risksArray;
+      const tasks = this.currentProject.tasks;
       if (!this.generalInfo.invalid) {
-        this.db.get(id).catch((err) => { // Try to get the project by ID
-          if (err.name === 'not_found') { // If project is not found
-            return { // Return a new document
-              _id: id,
-              description: desc,
-              projectManager: manager,
-              teamMembers: team,
-              requirements: this.requirementsArray,
-              risks: this.risksArray,
-            };
-          } else {
-              console.log(err); // Catch other errors
-          }
-        }).then((doc) => { // Project document was found
-          this.db.put({ // Update document
-            _id: id,
-            _rev: doc._rev,
-            description: desc,
-            projectManager: manager,
-            teamMembers: team,
-            requirements: this.requirementsArray,
-            risks: this.risksArray,
-            tasks: doc.tasks
-          }).catch(err => console.log(err));
-        }).catch(err => console.log(err));
-
-      // Step 2 Add this project to a list of projects in the same manner
-        this.db.get('projects').catch((err) => {
-          if (err.name === 'not_found') {
-            return {
-              _id: 'projects',
-              projects: [id] // Needs to be an array!
-            };
-          } else {
-            console.log(err);
-          }
-        }).then((doc) => {
-            const projectList = doc.projects;
-
-            if (!projectList.includes(id)) {
-              projectList.push(id);
-            }
-
-            return this.db.put({
-              _id: 'projects',
-              _rev: doc._rev,
-              projects: projectList
-            }).then(() => {
-              this.snackBar.open('Project saved!', '', { // Display a success message to the user!
-                duration: 3000,
-                verticalPosition: 'top',
-              });
-          // Verify that everything worked. We can delete this .then() block when we are sure of the methods
-          }).then(() => {
-            this.db.get(id).then((document) => {
-              console.log(document);
-            }).catch(err => console.log(err));
-          }).catch(err => console.log(err));
-        }).catch(err => console.log(err));
-      }
+        const p = new Project({
+          id,
+          description: desc,
+          projectManager: manager,
+          teamMembers: team,
+          requirements: reqs,
+          risks,
+          tasks
+        });
+        console.log('in edit, p is', p);
+        this.saveProject(p);
+     }
     }
   }

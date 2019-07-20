@@ -8,10 +8,19 @@
 
 #project-manager {
   margin-top: 50px;
+  color: white;
+  font-size: 1.2rem;
 }
 
 #team-select {
   margin-top: 30px;
+  width: 140px;
+  background-color: #e0992f;
+  outline: 2px solid black;
+}
+
+mat-selection-list {
+  border: 2px black solid;
 }
 
 #risks-list {
@@ -25,9 +34,10 @@
 
 #description-text {
   height: 30rem;
-  width: 15rem;
+  /* width: 15rem; */
   background: none;
   font-size: 20px;
+  outline: 2px solid black;
 }
 
 #project-name {
@@ -60,6 +70,34 @@ mat-list-item {
   margin-bottom: 50px;
 }
 
+mat-list {
+  border: 2px solid black;
+}
+
 #likelihood {
   width: 250px;
+}
+
+.project-name-container {
+  margin-top: 50px;
+  color: white;
+  font-size: 1.2rem;
+  outline: 2px solid black;
+  width: 100px;
+}
+
+.project-name {
+  background:  #194ec5;
+  border: none;
+  font-size: 1.2rem;
+  color: white;
+}
+
+input:focus{
+  outline: none;
+}
+
+.divider{
+  border: 2px solid black;
+  width: 400px;
 }
