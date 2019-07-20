@@ -13,11 +13,11 @@ import { Project } from './project-model';
 })
 export class AppComponent implements OnInit {
   protected location: Location;
-  currentProject: Project;
-  projects: Project[] = [];
-  employeesList: string[] = [];
-  db: any;
-
+  public currentProject: Project;
+  public projects: Project[] = [];
+  public employeesList: string[] = [];
+  public db: any;
+  public url: any;
 
   constructor(
       protected injector: Injector,
@@ -30,24 +30,36 @@ export class AppComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.db = new PouchDB('pmonkey');
-    this.db.put({ // TODO should only put if does not exist -- low priority.
-                  // Technically not interfering, but it does catch an error it doesn't need to catch
-                  // because it doesn't need to even be putting a new doc here.
-      _id: 'projects',
-      projects: []
-    }).catch(err => console.log(err));
-
-
-    this.db.put({ // TODO should only put if does not exist
-      _id: 'employees',
-      employees: []
-    }).catch(err => console.log(err));
-
+    console.log('inside ngoninit');
+    this.initializeDatabase();
     this.getEmployeeList();
-    console.log('employees', this.employeesList);
   }
 
+  getUrl(): string {
+    return this.router.url;
+  }
+
+  initializeDatabase() {
+    console.log('getting database info');
+    this.db = new PouchDB('pmonkey');
+    this.db.get('projects').catch(err => {
+      if (err.name === 'not_found') {
+        return this.db.put({
+          _id: 'projects',
+          projects: []
+        }).catch(error => console.log(error));
+      }
+    });
+
+    this.db.get('employees').catch(err => {
+      if (err.name === 'not_found') {
+        return this.db.put({
+          _id: 'employees',
+          employees: []
+        }).catch(error => console.log(error));
+      }
+    });
+  }
   navigateHome() {
     this.router.navigateByUrl('/home');
   }
@@ -76,6 +88,7 @@ export class AppComponent implements OnInit {
       });
     }).catch(err => console.log(err));
     this.employeesList = employees;
+    return employees;
   }
 
   saveProject(p: Project) {
@@ -105,11 +118,7 @@ export class AppComponent implements OnInit {
         requirements: p.requirements,
         risks: p.risks,
         tasks: p.tasks
-      }).then(() => {
-        this.db.get(p.id).then((document) => {
-      console.log('149', document);
-    }).catch(err => console.log(err));
-      }).catch(err => console.log(err));
+      });
     }).catch(err => console.log(err));
 
   // Step 2 Add this project to a list of projects in the same manner
@@ -123,27 +132,18 @@ export class AppComponent implements OnInit {
       console.log(err);
     }
   }).then((doc) => {
-      const projectList = doc.projects;
+    console.log('doc is', doc);
+    const projectList = doc.projects;
 
-      if (!projectList.includes(p.id)) {
+    if (!projectList.includes(p.id)) {
         projectList.push(p.id);
       }
 
-      return this.db.put({
+    return this.db.put({
         _id: 'projects',
         _rev: doc._rev,
         projects: projectList
-      }).then(() => {
-        this.snackBar.open('Project saved!', '', { // Display a success message to the user!
-          duration: 3000,
-          verticalPosition: 'top',
-        });
-          // Verify that everything worked. We can delete this .then() block when we are sure of the methods
-          }).then(() => {
-            this.db.get(p.id).then((document) => {
-          console.log(document);
-        }).catch(err => console.log(err));
-      }).catch(err => console.log(err));
+      });
     }).catch(err => console.log(err));
   }
 }

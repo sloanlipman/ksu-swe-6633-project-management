@@ -6,7 +6,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppMaterialModule } from 'src/app/app-material.module';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import PouchDB from 'pouchdb';
 
+let ngOnInitSpy;
 describe('ManageEmployeesPageComponent', () => {
   let component: ManageEmployeesPage;
   let fixture: ComponentFixture<ManageEmployeesPage>;
@@ -29,10 +31,69 @@ describe('ManageEmployeesPageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ManageEmployeesPage);
     component = fixture.componentInstance;
+    component.db = new PouchDB('pmonkey'); // Instantiate the DB
+    component.db.put({
+      _id: 'employees',
+      employees: ['a']
+    });
+    ngOnInitSpy = spyOn(component, 'ngOnInit').and.stub();
+    spyOn(component['dialog'], 'open').and.callThrough();
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  afterEach(() => {
+    fixture.destroy();
+  });
+
+  it('Should get a list of employees on init', async () => {
+    spyOn(component.db, 'get').withArgs('employees').and.returnValue(Promise.resolve({
+      employees: ['Jon', 'Bran', 'Tyrion']
+    }));
+    await component.getEmployees();
+    fixture.detectChanges();
+    expect(component.employeesList).toEqual(['Jon', 'Bran', 'Tyrion']);
+  });
+
+  it('Should delete an employee', async () => {
+    const empList = ['Jon', 'Bran', 'Tyrion'];
+    component.employeesList = empList;
+    const finalList = ['Bran', 'Tyrion'];
+    spyOn(component.db, 'get').and.returnValue(Promise.resolve({
+      employees: ['Jon', 'Bran', 'Tyrion']
+    }));
+    spyOn(component.db, 'put').and.returnValue(Promise.resolve(true));
+    await component.removeEmployee('Jon');
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      expect(component.employeesList).toEqual(finalList);
+      expect(component.db.get).toHaveBeenCalledTimes(1);
+      expect(component.db.put).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Trying to add a new employee', () => {
+    beforeEach(async () => {
+      component.employeesList = ['Jon', 'Bran', 'Tyrion'];
+      spyOn(component.db, 'get').and.returnValue(Promise.resolve({
+        employees: ['Jon', 'Bran', 'Tyrion']
+      }));
+    });
+
+    it('Should add new employees', async () => {
+      spyOn(component.db, 'put').and.returnValue(Promise.resolve(true));
+      await component.handleEmployee('Ned');
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(component.employeesList).toEqual(['Jon', 'Bran', 'Tyrion', 'Ned']);
+      });
+    });
+    it('Should add new employees', async () => {
+      spyOn(component.db, 'put').and.returnValue(Promise.resolve(true));
+      await component.handleEmployee('Jon');
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(component.employeesList).toEqual(['Jon', 'Bran', 'Tyrion']);
+      });
+    });
   });
 });

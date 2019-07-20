@@ -1,25 +1,26 @@
-<div class="button">
-  <!-- <button mat-raised-button class="cancel" *ngIf="isExistingUser()" (click)="goBack()">Cancel</button> -->
-  <button mat-raised-button color="primary" (click)="save()">Submit Changes</button>
-</div>
-<br/><br/>
-<mat-grid-list cols="8" rowHeight="20rem" [gutterSize]="'15px'">
-  <mat-grid-tile colspan="2" rowspan="1.5" id="information">
+<mat-grid-list cols="4" rowHeight="50rem" >
+  <!-- <mat-grid-tile colspan="1" class="dummy"></mat-grid-tile> -->
+  <mat-grid-tile colspan="1" rowspan="1" id="information" class="tile">
 
       <mat-grid-tile-header>Name and Description</mat-grid-tile-header><br/>
         <div class="project-name-container">Project Name:
-        <input readonly class="project-name" [(ngModel)]="currentProjectName"/> <br/>
+        <div></div>
+        <input readonly class="project-name" [(ngModel)]="currentProjectName"/><br/>
       </div>
       <form [formGroup]="generalInfo">
         <mat-form-field id="project-description">
-          <div class="gridBody">
+          <div class="descriptionBody">
             <textarea matInput placeholder="Description" formControlName="projectDescription" class="form-control" id="description-text"></textarea>
         </div>
       </mat-form-field>
     </form>
+    <button mat-raised-button color="primary" (click)="save()">Save Description</button>
   </mat-grid-tile>
 
-  <mat-grid-tile id="employee-list" colspan="2" rowspan="1.5">
+  <!-- <mat-grid-tile colspan="1" class="dummy"></mat-grid-tile> -->
+  <!-- <mat-grid-tile colspan="1" class="dummy"></mat-grid-tile> -->
+
+  <mat-grid-tile id="employee-list" colspan="1" rowspan="1" class="tile">
     <mat-grid-tile-header>Team Members</mat-grid-tile-header>
     <div id="project-manager">Project Manager <br/>
     <mat-select id="team-select" [formControl]="projectManager">
@@ -33,54 +34,52 @@
         </mat-selection-list>
   </mat-grid-tile>
 
+  <!-- <mat-grid-tile colspan="1" class="dummy"></mat-grid-tile> -->
+  <!-- <mat-grid-tile colspan="1" class="dummy"></mat-grid-tile>   -->
 
-  <mat-grid-tile id="risks-list" colspan="2" rowspan="1.5">
+  <mat-grid-tile id="risks-list" colspan="1" rowspan="1" class="tile">
     <mat-grid-tile-header>Risks</mat-grid-tile-header>
     <br/><br/>
     <button mat-raised-button class="add" (click)="addRisk()">Add New Risk</button>
 
     <mat-list>
-      <mat-list-item>
-        <div class="column">Name</div>
-        <div class="column">Description</div>
-        <div class="column">Likelihood</div>
-      </mat-list-item>
-      <mat-list-item *ngFor="let risk of risksArray" class="individual-risk">
-        <div class="column">{{risk.name}}</div>
-        <div class="column">{{risk.description}}</div>
-        <div class="column">{{risk.likelihood}}</div>
+      <div class="item" *ngFor="let risk of risksArray">
+        <mat-list-item>
+          <div class="column">Name: {{risk.name}}</div>
+          <div class="column">Description: {{risk.description}}</div>
+          <div class="column">Likelihood: {{risk.likelihood}}</div>
+        </mat-list-item>
         <div class="inner-buttons">
-          <button mat-raised-button class="edit"(click)="editRisk(risk)">Edit</button>
-          <button mat-raised-button class="delete" (click)="deleteRisk(risk)">Delete</button>
+            <button mat-raised-button class="edit"(click)="editRisk(risk)">Edit</button>
+            <button mat-raised-button class="delete" (click)="deleteRisk(risk)">Delete</button>
+        </div>
       </div>
-      </mat-list-item>
-      </mat-list>
+    </mat-list>
   </mat-grid-tile>
 
+ <!-- <mat-grid-tile colspan="1" class="dummy"></mat-grid-tile> -->
+ <!-- <mat-grid-tile colspan="1" class="dummy"></mat-grid-tile> -->
 
-  <mat-grid-tile id="requirements-list" colspan="2" rowspan="1.5">
+  <mat-grid-tile id="requirements-list" colspan="1" rowspan="1" class="tile">
     <mat-grid-tile-header>Requirements</mat-grid-tile-header>
     <br/><br/>
     <button mat-raised-button class="add" (click)="addRequirement()">Add New Requirement</button>
     <mat-list>
+      <div class="item" *ngFor="let req of requirementsArray">
       <mat-list-item>
-          <div class="column">Name</div>
-          <div class="column">Category</div>
-          <div class="column">Description</div>
-          <div class="column">Priority</div>
-      </mat-list-item>
+        <div class="column">Name: {{req.name}}</div>
+        <div class="column">Category: {{req.category}}</div>
+        <div class="column">Description: {{req.description}}</div>
+        <div class="column">Priority: {{req.priority}}</div>
 
-      <mat-list-item *ngFor="let req of requirementsArray">
-        <div class="column">{{req.name}}</div>
-        <div class="column">{{req.category}}</div>
-        <div class="column">{{req.description}}</div>
-        <div class="inner-buttons">
+      </mat-list-item>
+      <div class="inner-buttons">
           <button mat-raised-button class="edit"(click)="editRequirement(req)">Edit</button>
           <button mat-raised-button class="delete" (click)="deleteRequirement(req)">Delete</button>
         </div>
-      </mat-list-item>
+      </div>
 
     </mat-list>
   </mat-grid-tile>
-  <mat-grid-tile colspan="2" rowspan="0.5"></mat-grid-tile>
+  <!-- <mat-grid-tile colspan="1" class="dummy"></mat-grid-tile> -->
 </mat-grid-list>

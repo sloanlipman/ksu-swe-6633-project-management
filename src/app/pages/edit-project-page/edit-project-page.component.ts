@@ -36,17 +36,25 @@
       public dialogRef: MatDialogRef<AddRiskDialog>,
       @Inject(MAT_DIALOG_DATA) public data: RiskDialogData,
       private formBuilder: FormBuilder,
-      private snackBar: MatSnackBar) {}
+      private snackBar: MatSnackBar) {
+        this.loadData(data);
+      }
 
     onCancel(): void {
       this.dialogRef.close();
+    }
+
+    loadData(data?: any) {
+      this.riskDialogForm.controls.riskName.setValue(data.name);
+      this.riskDialogForm.controls.riskDescription.setValue(data.description);
+      this.riskDialogForm.controls.riskLikelihood.setValue(data.likelihood);
     }
 
     validateLikelihood() {
       const chance = this.riskDialogForm.get('riskLikelihood').value;
       if (chance >= 100 || chance <= 0) {
         this.riskDialogForm.controls.riskLikelihood.setValue(null);
-        this.snackBar.open('Likelihood must be between 1% and 99%', '', { // Display a success message to the user!
+        this.snackBar.open('Likelihood must be between 1% and 99%', '', { // Display an error message to the user!
           duration: 3000,
           verticalPosition: 'top',
         });
@@ -71,10 +79,31 @@
       public dialogRef: MatDialogRef<AddRequirementDialog>,
       @Inject(MAT_DIALOG_DATA) public data: RequirementDialogData,
       private formBuilder: FormBuilder,
-      ) {}
+      private snackBar: MatSnackBar
+      ) {
+        this.loadData(data);
+      }
 
     onCancel(): void {
       this.dialogRef.close();
+    }
+
+    loadData(data?: any) {
+      this.reqDialogForm.controls.reqName.setValue(data.name);
+      this.reqDialogForm.controls.reqDescription.setValue(data.description);
+      this.reqDialogForm.controls.reqCategory.setValue(data.category);
+      this.reqDialogForm.controls.reqPriority.setValue(data.priority);
+    }
+
+    validatePriority() {
+      const priority = this.reqDialogForm.get('reqPriority').value;
+      if (priority > 5 || priority < 1) {
+        this.reqDialogForm.controls.reqPriority.setValue(null);
+        this.snackBar.open('Priority should be between 1 and 5', '', {
+          duration: 3000,
+          verticalPosition: 'top',
+        });
+      }
     }
 
   }
@@ -104,7 +133,7 @@
     }
 
   ngOnInit() {
-      this.db = new PouchDB('pmonkey');
+      this.initializeDatabase();
       this.getEmployeeList();
       this.getFormControls();
       this.getProjectsList();
@@ -113,7 +142,6 @@
 
     loadProject(): void {
       this.db.get(this.currentProjectName).then((doc) => {
-        console.log('project is', doc);
         this.generalInfo.controls.projectDescription.setValue(doc.description);
         this.teamMembers.setValue(doc.teamMembers);
         this.projectManager.setValue(doc.projectManager);
@@ -140,14 +168,8 @@
     }
 
     getProject() {
-
-      console.log('getting project');
-      const name = this.router.url.split('/')[2]; // Last part of the URL is equal to the project name
-      if (name === 'new') {
-       } else {
-        this.currentProjectName = name;
-        this.loadProject();
-      }
+      this.currentProjectName = this.getUrl().split('/')[2];
+      this.loadProject();
     }
 
     getFormControls() {
@@ -159,8 +181,6 @@
                                                 // "On the team" means you can assign work to them, then yes.
                                                 // Otherwise, can only get PM duties?
     }
-
-
 
     compare(c1: any, c2: any) {
       return c1 && c2 && c1 === c2;
@@ -178,10 +198,11 @@
 
       dialogRef.afterClosed().subscribe(result => {
         this.risksArray.push({
-          name: result.name,
-          description: result.description,
-          likelihood: result.likelihood
+          name: result.get('riskName').value,
+          description: result.get('riskDescription').value,
+          likelihood: result.get('riskLikelihood').value
         });
+        this.save();
       });
     }
 
@@ -198,38 +219,42 @@
 
       dialogRef.afterClosed().subscribe(result => {
         this.requirementsArray.push({
-          name: result.name,
-          description: result.description,
-          category: result.category,
-          priority: result.priority,
+          name: result.get('reqName').value,
+          description: result.get('reqDescription').value,
+          category: result.get('reqCategory').value,
+          priority: result.get('reqPriority').value
         });
+        this.save();
       });
     }
 
     editRisk(risk) {
+      const oldRisk = this.risksArray[this.risksArray.indexOf(risk)];
       const dialogRef = this.dialog.open(AddRiskDialog, {
         width: '450px',
         data: {
           name: risk.name,
-          description: risk.description
+          description: risk.description,
+          likelihood: risk.likelihood
         }
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        risk = {
-          name: result.name,
-          description: result.description
-        };
+          oldRisk.name = result.get('riskName').value;
+          oldRisk.description = result.get('riskDescription').value;
+          oldRisk.likelihood = result.get('riskLikelihood').value;
       });
+      this.save();
     }
 
     deleteRisk(risk) {
       const index = this.risksArray.indexOf(risk);
       this.risksArray.splice(index, 1);
+      this.save();
     }
 
     editRequirement(requirement) {
-      const index = this.requirementsArray.indexOf(requirement);
+      const oldReq = this.requirementsArray[this.requirementsArray.indexOf(requirement)];
       const dialogRef = this.dialog.open(AddRequirementDialog, {
         width: '450px',
         data: {
@@ -241,18 +266,18 @@
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        this.requirementsArray[index] = {
-          name: result.name,
-          description: result.description,
-          category: result.category,
-          priority: result.priority
-          };
-        });
+        oldReq.name = result.get('reqName').value;
+        oldReq.description = result.get('reqDescription').value;
+        oldReq.category = result.get('reqCategory').value;
+        oldReq.priority = result.get('reqPriority').value;
+      });
+      this.save();
     }
 
     deleteRequirement(requirement) {
       const index = this.requirementsArray.indexOf(requirement);
       this.requirementsArray.splice(index, 1);
+      this.save();
     }
 
     get f() {
@@ -277,7 +302,6 @@
           risks,
           tasks
         });
-        console.log('in edit, p is', p);
         this.saveProject(p);
      }
     }

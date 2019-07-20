@@ -49,8 +49,11 @@ export class ManageEmployeesPage extends AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.db = new PouchDB('pmonkey'); // Instantiate the DB
+    this.initializeDatabase();
+    this.getEmployees();
+  }
 
+  getEmployees() {
     this.db.get('employees').then((doc) => { // Retrieve the employees document
       console.log('Doc is', doc);
       doc.employees.forEach(emp => {
@@ -69,40 +72,45 @@ export class ManageEmployeesPage extends AppComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => { // Subscribe to the name entered in the Dialog
       const newName = result.get('name').value;
-      this.db.get('employees').then((doc) => { // Get the employee document
-        const empList = doc.employees; // Get the list of employees from the document
-        let existingEmployee = false;
+      this.handleEmployee(newName);
+  });
+}
 
-      // Check if the employee alredy exists
-        doc.employees.forEach(emp => {
-          if (newName === emp) {
-            existingEmployee = true;
-          }
-        });
+  handleEmployee(newEmployee: string) {
+    this.db.get('employees').then((doc) => { // Get the employee document
+      const empList = doc.employees; // Get the list of employees from the document
+      let existingEmployee = false;
 
-    // If the employee is a new name, add it to the list
-        if (!existingEmployee)  {
-          empList.push(newName); // Add the new employee name to the document
-          return this.db.put({ // Update the document in the DB
-            _id: 'employees', // Keep the document name the same
-            _rev: doc._rev, // Update the revision
-            employees: empList // Update the employees field with our new list
-          }).then(() => this.employeesList.push(newName));
+    // Check if the employee alredy exists
+      doc.employees.forEach(emp => {
+        if (newEmployee.toLowerCase() === emp.toLowerCase()) {
+          existingEmployee = true;
+        }
+      });
 
-      // Otherwise, notify the user that the employee was already there!
-       } else {
-        this.snackBar.open('Employee already exists!', '', { // Display error to the user
-          duration: 3000,
-          verticalPosition: 'top',
-        });
-       } // If successful, push the new employee to the class variable the UI will show it
-      }).catch(err => console.log(err)); // Catch errors
-    });
+  // If the employee is a new name, add it to the list
+      if (!existingEmployee)  {
+        empList.push(newEmployee); // Add the new employee name to the document
+        return this.db.put({ // Update the document in the DB
+          _id: 'employees', // Keep the document name the same
+          _rev: doc._rev, // Update the revision
+          employees: empList // Update the employees field with our new list
+        }).then(() => this.employeesList.push(newEmployee));
+
+    // Otherwise, notify the user that the employee was already there!
+     } else {
+      this.snackBar.open('Employee already exists!', '', { // Display error to the user
+        duration: 3000,
+        verticalPosition: 'top',
+      });
+     } // If successful, push the new employee to the class variable the UI will show it
+    }).catch(err => console.log(err)); // Catch errors
   }
 
   removeEmployee(employee) {
     let idx;
     this.db.get('employees').then((doc) => { // Get the employee document
+      console.log('got', doc);
       const empList = doc.employees;
       idx = empList.indexOf(employee); // Find index of employee
       empList.splice(idx, 1); // Remove employee
@@ -114,6 +122,7 @@ export class ManageEmployeesPage extends AppComponent implements OnInit {
         employees: empList
       }).then(() => {
         this.employeesList.splice(idx, 1); // Remove from UI
+        console.log('final emp list', this.employeesList);
       });
     }).catch(err => console.log(err));
   }

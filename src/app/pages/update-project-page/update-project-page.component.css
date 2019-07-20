@@ -18,10 +18,10 @@
 .complete {
   background: plum;
 }
-
+/* 
 .inner-buttons {
   margin-left: 2rem;
-}
+} */
 
 .column {
   margin-right: 3rem;
@@ -30,9 +30,11 @@
 .column1 {
   margin-right: 13rem;
 }
+
 .phaseColumn {
   width: 30rem;
   margin-right: 2rem;
+  font-size: 1.2rem;
 }
 
 .estimated {
@@ -56,8 +58,5 @@
 }
 
 .completed {
-  text-decoration: line-through;
+  text-decoration: line-through red;
 }
-/* mat-list-item { */
-  /* margin-bottom: 50px;
-} */
