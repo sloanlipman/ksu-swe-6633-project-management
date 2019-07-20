@@ -81,7 +81,6 @@ export class HomePage extends AppComponent implements OnInit {
         this.createProject();
       } else {
       this.projects = doc.projects;
-      console.log(this.projects);
       this.currentProjectForm.setValue(this.projects[0]);
       this.changeProject(this.projects[0]);
     }

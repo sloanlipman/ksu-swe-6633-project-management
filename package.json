@@ -4,10 +4,12 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",
-    "build": "ng build",
+    "build": "ng build --prod --base-href https://sloanlipman.github.io/ksu-swe-6633-project-management/",
     "test": "ng test --code-coverage",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "predeploy": "npm run build",
+    "deploy": "ngh --dir dist/project-management"
   },
   "private": true,
   "dependencies": {
@@ -22,6 +24,7 @@
     "@angular/platform-browser-dynamic": "~8.0.1",
     "@angular/router": "~8.0.1",
     "core-js": "^3.1.4",
+    "gh-pages": "^2.0.1",
     "jasmine": "^3.3.1",
     "pouchdb": "^7.1.1",
     "rxjs": "~6.4.0",
@@ -48,5 +51,6 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.4.3"
-  }
+  },
+  "homepage": "https://sloanlipman.github.io/ksu-swe-6633-project-management/"
 }
