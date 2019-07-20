@@ -27,6 +27,7 @@ export interface TaskData {
   isCodingCompleted: boolean;
   isTestingCompleted: boolean;
   isTaskCompleted: boolean;
+  isManagementCompleted: boolean;
 
   teamList: string[];
   requirementsList: string[];
@@ -167,6 +168,7 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
         isCodingCompleted: false,
         isTestingCompleted: false,
         isTaskCompleted: false,
+        isManagementCompleted: false,
         teamList: this.teamList,
         requirementsList: this.requirementsList
       }
@@ -194,6 +196,7 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
         isCodingCompleted: false,
         isTestingCompleted: false,
         isTaskCompleted: false,
+        isManagementCompleted: false,
       });
       this.currentProject.tasks = this.tasksList;
       this.saveProject(this.currentProject);
@@ -219,11 +222,12 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
       estManagement: task.estManagement,
       loggedManagement: task.loggedManagement,
       assignedTo: task.assignedTo,
-      areRequirementsCompleted: false,
-      isDesigningCompleted: false,
-      isCodingCompleted: false,
-      isTestingCompleted: false,
-      isTaskCompleted: false,
+      areRequirementsCompleted: task.areRequirementsCompleted,
+      isDesigningCompleted: task.isDesigningCompleted,
+      isCodingCompleted: task.isCodingCompleted,
+      isTestingCompleted: task.isTestingCompleted,
+      isManagementCompleted: task.isManagementCompleted,
+      isTaskCompleted: task.isTaskCompleted,
       teamList: this.teamList,
       requirementsList: this.requirementsList
     }
@@ -243,6 +247,12 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
       oldTask.estManagement = result.get('estManagement').value;
       oldTask.loggedManagement = result.get('loggedManagement').value;
       oldTask.assignedTo = result.get('assignedTo').value;
+      oldTask.areRequirementsCompleted = task.areRequirementsCompleted;
+      oldTask.isDesigningCompleted = task.isDesigningCompleted;
+      oldTask.isCodingCompleted = task.isCodingCompleted;
+      oldTask.isTestingCompleted = task.isTestingCompleted;
+      oldTask.isManagementCompleted = task.isManagementCompleted;
+      oldTask.isTaskCompleted = task.isTaskCompleted;
       this.currentProject.tasks = this.tasksList;
       this.saveProject(this.currentProject);
     });
@@ -254,10 +264,41 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
     this.tasksList.splice(index, 1);
     this.currentProject.tasks = this.tasksList;
     this.saveProject(this.currentProject);
-
-
   }
 
-  // TODO mark phases as complete
-  // TODO mark entire tasks as complete
+  getCompletedStatus(query: boolean) {
+    if (query) {
+      return 'completed';
+    } else {
+      return 'inProgress';
+    }
+  }
+
+  getButtonText(query: boolean) {
+    if (!query) {
+      return 'Mark as Completed';
+    } else {
+      return 'Mark as In Progress';
+    }
+  }
+
+  toggleCompleteRequirements(task) {
+    task.areRequirementsCompleted = !task.areRequirementsCompleted;
+  }
+
+  toggleCompleteDesigning(task) {
+    task.isDesigningCompleted = !task.isDesigningCompleted;
+  }
+
+  toggleCompleteCoding(task) {
+    task.isCodingCompleted = !task.isCodingCompleted;
+  }
+
+  toggleCompleteTesting(task) {
+    task.isTestingCompleted = !task.isTestingCompleted;
+  }
+
+  toggleCompleteManagement(task) {
+    task.isManagementCompleted = !task.isManagementCompleted;
+  }
 }

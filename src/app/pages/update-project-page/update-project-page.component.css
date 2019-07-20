@@ -2,6 +2,10 @@
   background: green;
   margin-bottom: 5px;
 }
+.save{
+  background: purple;
+  margin-bottom: 5px;
+}
 
 .edit {
   background: blue;
@@ -51,6 +55,9 @@
   margin-right: 1rem;
 }
 
+.completed {
+  text-decoration: line-through;
+}
 /* mat-list-item { */
   /* margin-bottom: 50px;
 } */
