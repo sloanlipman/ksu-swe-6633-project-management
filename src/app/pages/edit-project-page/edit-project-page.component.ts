@@ -114,18 +114,25 @@
       this.risksArray = [];
       if (this.router.url !== '/edit/new') {
         // Load data
-    this.db.get(this.currentProjectName).then((doc) => {
-
-/*  This call should return a document that has fields id, description, projectManager, teamMembers, requirements, risks, and tasks
-     Example of assigning the description: this.generalInfo.controls.decription.setValue(doc.description);
-     Example of assigning the team members: this.teamMembers.setValue(doc.teamMembers)
-     To assign the risks and requirements, do a for loop over doc.requirements and 
-        doc.risks and add them to the array with the push method we've been doing before
-
-*/
-
-        }).catch(err => console.log(err));
+      this.loadProject();
       }
+    }
+
+    loadProject(): void {
+      this.db.get(this.currentProjectName).then((doc) => {
+        this.generalInfo.controls.projectName.setValue(doc.id);
+        this.generalInfo.controls.projectDescription.setValue(doc.description);
+        this.teamMembers.setValue(doc.teamMembers);
+        this.projectManager.setValue(doc.projectManager);
+
+        for (const risk of doc.risks) {
+            this.risksArray.push(risk);
+            }
+
+        for (const req of doc.requirements) {
+              this.requirementsArray.push(req);
+              }
+          }).catch(err => console.log(err));
     }
 
     getEmployeeList() {
@@ -248,8 +255,6 @@
       const desc = this.f.projectDescription.value;
       const team = this.teamMembers.value;
       const manager = this.projectManager.value;
-      console.log(this.f.projectName.value);
-      console.log(this.f.projectDescription.value);
       // Step 1: Create a document for this project
       if (!this.generalInfo.invalid) {
         this.db.get(id).catch((err) => { // Try to get the project by ID
