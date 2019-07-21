@@ -177,9 +177,7 @@
         projectDescription: new FormControl('', [Validators.required]),
       });
       this.teamMembers = new FormControl();
-      this.projectManager = new FormControl(); // TODO can project manager also be on the team? Should it auto select, auto-deselect?3
-                                                // "On the team" means you can assign work to them, then yes.
-                                                // Otherwise, can only get PM duties?
+      this.projectManager = new FormControl();
     }
 
     compare(c1: any, c2: any) {
@@ -188,7 +186,7 @@
 
     addRisk() {
       const dialogRef = this.dialog.open(AddRiskDialog, {
-        width: '450px',
+        width: '360px',
         data: {
           name: undefined,
           description: undefined,
@@ -208,7 +206,7 @@
 
     addRequirement() {
       const dialogRef = this.dialog.open(AddRequirementDialog, {
-        width: '450px',
+        width: '360px',
         data: {
           name: undefined,
           description: undefined,
@@ -231,7 +229,7 @@
     editRisk(risk) {
       const oldRisk = this.risksArray[this.risksArray.indexOf(risk)];
       const dialogRef = this.dialog.open(AddRiskDialog, {
-        width: '450px',
+        width: '360px',
         data: {
           name: risk.name,
           description: risk.description,
@@ -256,7 +254,7 @@
     editRequirement(requirement) {
       const oldReq = this.requirementsArray[this.requirementsArray.indexOf(requirement)];
       const dialogRef = this.dialog.open(AddRequirementDialog, {
-        width: '450px',
+        width: '360px',
         data: {
           name: requirement.name,
           description: requirement.description,
@@ -282,6 +280,14 @@
 
     get f() {
       return this.generalInfo.controls;
+    }
+
+    manualSave(field: string) {
+      this.snackBar.open(field + ' saved!', '', {
+        duration: 3000,
+        verticalPosition: 'top',
+      });
+      this.save();
     }
 
     save() {

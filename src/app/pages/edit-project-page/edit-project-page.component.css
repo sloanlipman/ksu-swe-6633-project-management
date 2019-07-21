@@ -56,8 +56,13 @@ mat-selection-list {
   background: #d20b0b;
 }
 
+.save {
+  margin-top: 1rem;
+}
+
 .inner-buttons {
   margin-left: 20px;
+
 }
 
 .column {
@@ -112,4 +117,14 @@ input:focus{
 
 mat-form-field {
   padding-right: 5rem;
+}
+
+::ng-deep .mat-form-field-underline {
+  display: none;
+}
+
+textarea {
+  max-width: unset !important;
+  width: 250px !important;
+  resize: none !important;
 }

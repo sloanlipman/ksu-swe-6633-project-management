@@ -93,7 +93,15 @@ describe('HomePage', () => {
       expect(navSpy).toHaveBeenCalledWith('edit');
     });
 
-    it('Should call navigate with "update"', () => {
+    it('Should call navigate with "edit" if no requirements or team members are added to the project', () => {
+      const navSpy = spyOn(component, 'navigate').and.stub();
+      component.updateProject();
+      expect(navSpy).toHaveBeenCalledWith('edit');
+    });
+
+    it('Should call navigate with "update" if there are requirements and team members', () => {
+      component.currentProject.requirements = ['R1'];
+      component.currentProject.teamMembers = ['Jim'];
       const navSpy = spyOn(component, 'navigate').and.stub();
       component.updateProject();
       expect(navSpy).toHaveBeenCalledWith('update');
@@ -116,12 +124,27 @@ describe('HomePage', () => {
   });
 
   it('Should get projects', async () => {
+      spyOn(component.db, 'get').and.returnValue(Promise.resolve({
+        projects: ['a', 'b', 'c']
+      }));
+      getProjectsSpy.and.callThrough();
+      await component.getProjects();
+      fixture.whenStable().then(() => {
+        expect(component.currentProjectForm.value).toEqual('a');
+        expect(changeProjectSpy).toHaveBeenCalled();
+      });
+    });
+
+  it('Should create a project when there are none', async () => {
     spyOn(component.db, 'get').and.returnValue(Promise.resolve({
-      projects: ['a', 'b', 'c']
+      projects: []
     }));
+    spyOn(component, 'createProject').and.stub();
     getProjectsSpy.and.callThrough();
     await component.getProjects();
-    expect(component.currentProjectForm.value).toEqual('a');
+    fixture.whenStable().then(() => {
+      expect(component.createProject).toHaveBeenCalled();
+    });
   });
 
   it('Should change projects', async () => {
@@ -171,13 +194,6 @@ describe('HomePage', () => {
       expect(component.saveProject).toHaveBeenCalled();
       expect(component.currentProject.id).toEqual('d');
       expect(component['router'].navigateByUrl).toHaveBeenCalledWith('/employees');
-    });
-    it('Should go to edit project page if there are employees', async () => {
-      component.employeesList = ['John'];
-      await component.handleProjectSubmission('d');
-      expect(component.saveProject).toHaveBeenCalled();
-      expect(component.currentProject.id).toEqual('d');
-      expect(component['router'].navigateByUrl).toHaveBeenCalledWith('/edit/d');
     });
   });
 

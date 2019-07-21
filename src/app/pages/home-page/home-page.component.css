@@ -1,12 +1,18 @@
 .project-item {
-  margin-bottom: 1rem;
+  margin: 1rem;
   border: 2px black solid;
+  color: whitesmoke;
+}
+
+.header {
   color: white;
+  text-decoration: underline;
 }
 
 .inner {
   font-size: 1.4rem !important;
   color: black;
+  margin-left: 1rem;
 }
 
 .outer-container {

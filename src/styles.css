@@ -15,7 +15,6 @@ mat-grid-tile-header{
 mat-grid-tile {
   padding-top: 7rem;
   overflow: auto !important;
-  margin-top: 10px;
   background: #317937;
 }
 
@@ -75,3 +74,8 @@ mat-selection-list {
 button {
   border: black 1px solid !important;
 }
+
+.mat-dialog-content {
+  padding: 24px 24px !important;
+}
+

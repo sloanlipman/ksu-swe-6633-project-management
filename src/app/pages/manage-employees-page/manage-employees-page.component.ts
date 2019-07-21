@@ -50,21 +50,12 @@ export class ManageEmployeesPage extends AppComponent implements OnInit {
 
   ngOnInit() {
     this.initializeDatabase();
-    this.getEmployees();
-  }
-
-  getEmployees() {
-    this.db.get('employees').then((doc) => { // Retrieve the employees document
-      console.log('Doc is', doc);
-      doc.employees.forEach(emp => {
-        this.employeesList.push(emp); // For each employee already in the DB, add to class variable array so UI will display
-      });
-    }).catch(err => console.log(err));
+    this.getEmployeeList();
   }
 
   addEmployee() {
     const dialogRef = this.dialog.open(AddEmployeeDialog, {
-      width: '450px',
+      width: '360px',
       data: {
         name: undefined,
       }
@@ -110,7 +101,6 @@ export class ManageEmployeesPage extends AppComponent implements OnInit {
   removeEmployee(employee) {
     let idx;
     this.db.get('employees').then((doc) => { // Get the employee document
-      console.log('got', doc);
       const empList = doc.employees;
       idx = empList.indexOf(employee); // Find index of employee
       empList.splice(idx, 1); // Remove employee
@@ -122,7 +112,6 @@ export class ManageEmployeesPage extends AppComponent implements OnInit {
         employees: empList
       }).then(() => {
         this.employeesList.splice(idx, 1); // Remove from UI
-        console.log('final emp list', this.employeesList);
       });
     }).catch(err => console.log(err));
   }

@@ -10,6 +10,7 @@
   width: 30rem;
   margin-right: 2rem;
   font-size: 1.2rem;
+  text-decoration: underline;
 }
 
 .estimated {
@@ -34,4 +35,24 @@
 
 .completed {
   text-decoration: line-through red;
+}
+
+.mat-dialog-content {
+  padding: 0 24px !important;
+}
+
+#description {
+  height: 200px;
+  max-width: unset !important;
+  width: 150px;
+  resize: none;
+}
+
+::ng-deep .mat-form-field-underline {
+  display: none;
+}
+
+#name {
+  height: 200px;
+  resize: none;
 }
