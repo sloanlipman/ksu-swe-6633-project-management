@@ -1,5 +1,5 @@
 mat-toolbar {
-  background: #6DDE76;
+  background: #317937;
 }
 
 .header-button {
@@ -8,4 +8,8 @@ mat-toolbar {
 
 #projectName {
   color: black;
+}
+
+button {
+  border: none !important;
 }

@@ -6,25 +6,29 @@ html {
 }
 
 mat-grid-tile-header{
-  font-size: 18px;
+  font-size: 1.5rem;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
+  width: auto;
 }
 
 mat-grid-tile {
-  padding-top: 70px;
+  padding-top: 7rem;
+  overflow: auto !important;
+  margin-top: 10px;
+  background: #317937;
 }
 
-mat-grid-list{
-  margin-bottom: 25px;
+mat-grid-list {
+  margin-bottom: 10rem;
 }
 
 mat-selection-list {
-  max-height: 375px;
-  max-width: 1000px;
+  max-height: 50rem;
+  max-width: 100rem;
   overflow: auto;
   width: 90%;
-  margin-top: 50px;
+  margin-top: 5rem;
 }
 
 
@@ -45,4 +49,33 @@ mat-selection-list {
   font-weight: bold;
   color: white;
   display: inline-block;
+}
+
+.add {
+  background: #000000;
+  margin-bottom: 5px;
+}
+.save{
+  background: purple;
+  margin-bottom: 5px;
+}
+
+.edit {
+  background: blue;
+}
+
+.delete {
+  background: #d20b0b;
+}
+
+.complete {
+  background: firebrick;
+}
+
+.create {
+  background: 
+}
+
+button {
+  border: black 1px solid !important;
 }

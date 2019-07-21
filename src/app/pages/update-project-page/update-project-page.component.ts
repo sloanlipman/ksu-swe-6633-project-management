@@ -26,7 +26,6 @@ export interface TaskData {
   isDesigningCompleted: boolean;
   isCodingCompleted: boolean;
   isTestingCompleted: boolean;
-  isTaskCompleted: boolean;
   isManagementCompleted: boolean;
 
   teamList: string[];
@@ -167,7 +166,6 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
         isDesigningCompleted: false,
         isCodingCompleted: false,
         isTestingCompleted: false,
-        isTaskCompleted: false,
         isManagementCompleted: false,
         teamList: this.teamList,
         requirementsList: this.requirementsList
@@ -195,8 +193,7 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
         isDesigningCompleted: false,
         isCodingCompleted: false,
         isTestingCompleted: false,
-        isTaskCompleted: false,
-        isManagementCompleted: false,
+        isManagementCompleted: false
       });
       this.currentProject.tasks = this.tasksList;
       this.saveProject(this.currentProject);
@@ -227,7 +224,6 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
       isCodingCompleted: task.isCodingCompleted,
       isTestingCompleted: task.isTestingCompleted,
       isManagementCompleted: task.isManagementCompleted,
-      isTaskCompleted: task.isTaskCompleted,
       teamList: this.teamList,
       requirementsList: this.requirementsList
     }
@@ -252,7 +248,6 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
       oldTask.isCodingCompleted = task.isCodingCompleted;
       oldTask.isTestingCompleted = task.isTestingCompleted;
       oldTask.isManagementCompleted = task.isManagementCompleted;
-      oldTask.isTaskCompleted = task.isTaskCompleted;
       this.currentProject.tasks = this.tasksList;
       this.saveProject(this.currentProject);
     });

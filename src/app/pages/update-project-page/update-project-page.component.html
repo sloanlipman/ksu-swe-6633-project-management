@@ -20,7 +20,7 @@
     <mat-list-item [class]="getCompletedStatus(task.areRequirementsCompleted)">
       <div class="phaseColumn">Requirements Analysis</div>
       <div class="estimated">Estimated: {{task.estReqs}}</div>
-      <div class="logged">Logged: Logged: {{task.loggedReqs}}</div>
+      <div class="logged">Logged: {{task.loggedReqs}}</div>
       <div class="inner-buttons">
         <button class="complete" mat-raised-button (click)="toggleCompleteRequirements(task)">{{getButtonText(task.areRequirementsCompleted)}}</button>
       </div>
