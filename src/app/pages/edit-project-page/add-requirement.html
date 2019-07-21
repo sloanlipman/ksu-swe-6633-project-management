@@ -2,20 +2,20 @@
 <div mat-dialog-content>
   <mat-form [formGroup]="reqDialogForm">
     <mat-form-field>
-      <input matInput formControlName="reqName" placeholder="Name" required [(ngModel)]="data.name">
+      <input matInput formControlName="reqName" placeholder="Name" required>
     </mat-form-field>
     <mat-form-field>
-        <input matInput formControlName="reqDescription" placeholder="Description" required [(ngModel)]="data.description">
+        <input matInput formControlName="reqDescription" placeholder="Description" required>
     </mat-form-field>
     <mat-form-field>
-        <input matInput formControlName="reqCategory" placeholder="Category" required [(ngModel)]="data.category">
+        <input matInput formControlName="reqCategory" placeholder="Category" required>
     </mat-form-field>
     <mat-form-field>
-        <input matInput formControlName="reqPriority"  type="number" min="1" max="10" placeholder="Priority" required [(ngModel)]="data.priority">
+        <input matInput formControlName="reqPriority"  type="number" min="1" max="5" placeholder="Priority (1-5)" required (keyup)="validatePriority()">
     </mat-form-field>
     <div mat-dialog-actions>
       <button mat-button (click)="onCancel()">Cancel</button>
-      <button mat-button [mat-dialog-close]="data" [disabled]="reqDialogForm.invalid">Save</button>
+      <button mat-button [mat-dialog-close]="reqDialogForm" [disabled]="reqDialogForm.invalid">Save</button>
     </div>
   </mat-form>
 </div>

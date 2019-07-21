@@ -113,8 +113,8 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
   }
 
    ngOnInit() {
-    this.db = new PouchDB('pmonkey');
-    this.currentProjectName = this.router.url.split('/')[2]; // Last part of the URL is equal to the project name
+    this.initializeDatabase();
+    this.currentProjectName = this.getUrl().split('/')[2]; // Last part of the URL is equal to the project name
     this.loadProject();
   }
 
@@ -153,15 +153,15 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
         description: undefined,
         requirement: undefined,
         estReqs: undefined,
-        loggedReqs: undefined,
+        loggedReqs: 0,
         estDesign: undefined,
-        loggedDesign: undefined,
+        loggedDesign: 0,
         estCode: undefined,
-        loggedCode: undefined,
+        loggedCode: 0,
         estTest: undefined,
-        loggedTest: undefined,
+        loggedTest: 0,
         estManagement: undefined,
-        loggedManagement: undefined,
+        loggedManagement: 0,
         assignedTo: undefined,
         areRequirementsCompleted: false,
         isDesigningCompleted: false,
@@ -284,21 +284,26 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
 
   toggleCompleteRequirements(task) {
     task.areRequirementsCompleted = !task.areRequirementsCompleted;
+    this.saveProject(this.currentProject);
   }
 
   toggleCompleteDesigning(task) {
     task.isDesigningCompleted = !task.isDesigningCompleted;
+    this.saveProject(this.currentProject);
   }
 
   toggleCompleteCoding(task) {
     task.isCodingCompleted = !task.isCodingCompleted;
+    this.saveProject(this.currentProject);
   }
 
   toggleCompleteTesting(task) {
     task.isTestingCompleted = !task.isTestingCompleted;
+    this.saveProject(this.currentProject);
   }
 
   toggleCompleteManagement(task) {
     task.isManagementCompleted = !task.isManagementCompleted;
+    this.saveProject(this.currentProject);
   }
 }

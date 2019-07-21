@@ -39,6 +39,7 @@ export class HomePage extends AppComponent implements OnInit {
   currentProjectName: string;
   projects: any[];
   db: any;
+  dialogRef: MatDialogRef<NewProjectDialog>;
 
   @Input() refresh: boolean;
   constructor(
@@ -52,7 +53,7 @@ export class HomePage extends AppComponent implements OnInit {
 
   ngOnInit() {
     this.currentProjectForm = new FormControl();
-    this.db = new PouchDB('pmonkey');
+    this.initializeDatabase();
     this.getProjects();
 }
 
@@ -91,51 +92,55 @@ export class HomePage extends AppComponent implements OnInit {
   }
 
   createProject() {
-    const dialogRef = this.dialog.open(NewProjectDialog, {
+    this.dialogRef = this.dialog.open(NewProjectDialog, {
       width: '400px',
       data: {
         name: undefined,
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-
+    this.dialogRef.afterClosed().subscribe(result => {
+      console.log('RESULT IS', result);
       const projectName = result.get('projectName').value.replace(/\s+/g, '');
-      let existingProject = false;
-      this.db.get('projects').then((doc) => {
-          console.log('got list of projects', doc);
-          doc.projects.forEach(project => {
-            if (project === projectName) {
-              existingProject = true;
-            }
-          });
-
-          if (!existingProject) {
-          this.currentProject = new Project({
-            id: projectName,
-            description: null,
-            projectManager: null,
-            teamMembers: [],
-            requirements: [],
-            risks: [],
-            tasks: []
-          });
-          this.projects.push(this.currentProject);
-          this.saveProject(this.currentProject);
-
-
-          if (this.employeesList.length === 0) {
-            this.router.navigateByUrl('/employees');
-          } else {
-            this.router.navigateByUrl('/edit/' + this.currentProject.id);
-          }
-        } else {
-            this.snackBar.open('Project already exists!', '', { // Display error to the user
-              duration: 3000,
-              verticalPosition: 'top',
-            });
-        }
-      }).catch(err => console.log(err));
+      this.handleProjectSubmission(projectName);
     });
+  }
+
+  handleProjectSubmission(projectName: string) {
+    let existingProject = false;
+    this.db.get('projects').then((doc) => {
+      console.log('got list of projects', doc);
+      doc.projects.forEach(project => {
+        if (project === projectName) {
+          existingProject = true;
+        }
+      });
+
+      if (!existingProject) {
+      this.currentProject = new Project({
+        id: projectName,
+        description: null,
+        projectManager: null,
+        teamMembers: [],
+        requirements: [],
+        risks: [],
+        tasks: []
+      });
+      this.projects.push(this.currentProject);
+      this.saveProject(this.currentProject);
+
+
+      if (this.employeesList.length === 0) {
+        this.router.navigateByUrl('/employees');
+      } else {
+        this.router.navigateByUrl('/edit/' + this.currentProject.id);
+      }
+    } else {
+        this.snackBar.open('Project already exists!', '', { // Display error to the user
+          duration: 3000,
+          verticalPosition: 'top',
+        });
+    }
+    }).catch(err => console.log(err));
   }
 }
