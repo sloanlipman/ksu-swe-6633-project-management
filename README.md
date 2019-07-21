@@ -1,1 +1,0 @@
-# ksu-swe-6633-project-management
