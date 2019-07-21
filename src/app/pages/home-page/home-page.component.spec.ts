@@ -8,10 +8,14 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { ReactiveFormsModule, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import PouchDB from 'pouchdb';
 import { MockDialog } from 'src/app/mock-dialog';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogModule } from '@angular/material';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { of } from 'rxjs';
+import { Project } from 'src/app/project-model';
 
+let dbSpy;
+let getProjectsSpy;
+let changeProjectSpy;
+let mockTask;
 const TEST_DIRECTIVES = [
   NewProjectDialog
 ];
@@ -60,6 +64,18 @@ describe('HomePage', () => {
     component = fixture.componentInstance;
     component.db = new PouchDB('pmonkey'); // Instantiate the DB
     spyOn(component['dialog'], 'open').and.callThrough();
+    dbSpy = spyOn(component, 'initializeDatabase').and.stub();
+    getProjectsSpy = spyOn(component, 'getProjects').and.stub();
+    changeProjectSpy = spyOn(component, 'changeProject').and.stub();
+    component.currentProject = new Project({
+      id: null,
+      description: null,
+      projectManager: null,
+      teamMembers: [],
+      requirements: [],
+      risks: [],
+      tasks: []
+    });
     fixture.detectChanges();
   });
 
@@ -103,29 +119,37 @@ describe('HomePage', () => {
     spyOn(component.db, 'get').and.returnValue(Promise.resolve({
       projects: ['a', 'b', 'c']
     }));
+    getProjectsSpy.and.callThrough();
     await component.getProjects();
     expect(component.currentProjectForm.value).toEqual('a');
   });
 
-  // it('Should create project and navigate to employees page', async () => {
-  //   component.employeesList = [];
-  //   spyOn(component.db, 'get').and.returnValue(Promise.resolve({
-  //     projects: ['New Project']
-  //   }));
-  //   spyOn(component, 'handleProjectSubmission').and.stub();
-  //   await component.createProject();
-  //   fixture.detectChanges();
-  //   // spyOn(component['dialogRef'], 'afterClosed').and.callFake(() => {
-  //   //   const form: FormGroup = component['formBuilder'].group({
-  //   //     projectName: new FormControl('', [Validators.required])
-  //   //   });
-  //   //   form.controls.projectName.setValue('Old Project');
-  //   //   return of(form);
-  //   // });
-  //   fixture.whenStable().then(() => {
-  //     expect(component.handleProjectSubmission).toHaveBeenCalled();
-  //   });
-  // });
+  it('Should change projects', async () => {
+    component.requirementsList = [];
+    component.riskList = [];
+    component.taskList = [];
+    spyOn(component.db, 'get').and.returnValue(Promise.resolve({
+      id: 'abc',
+      description: 'Description',
+      teamMembers: ['Jim', 'Jane'],
+      projectManager: 'Megan',
+      requirements: ['R1', 'R2'],
+      risks: ['Risk123'],
+      tasks: ['t1', 't2']
+    }));
+    changeProjectSpy.and.callThrough();
+    const expectedProject = new Project({
+      id: 'abc',
+      description: 'Description',
+      teamMembers: ['Jim', 'Jane'],
+      projectManager: 'Megan',
+      requirements: ['R1', 'R2'],
+      risks: ['Risk123'],
+      tasks: ['t1', 't2']
+    });
+    await component.changeProject('abc');
+    expect(component.currentProject).toEqual(expectedProject);
+  });
 
   describe('Should handle submitting the dialog', async () => {
     beforeEach(async () => {
@@ -155,6 +179,110 @@ describe('HomePage', () => {
       expect(component.currentProject.id).toEqual('d');
       expect(component['router'].navigateByUrl).toHaveBeenCalledWith('/edit/d');
     });
+  });
 
+  describe('Tasks time remaining', () => {
+    beforeEach(() => {
+      mockTask = {
+        name: 'T1',
+        description: 'Task Description',
+        requirement: 'R1',
+        estReqs: 10,
+        loggedReqs: 0,
+        estDesign: 10,
+        loggedDesign: 0,
+        estCode: 10,
+        loggedCode: 0,
+        estTest: 10,
+        loggedTest: 0,
+        estManagement: 10,
+        loggedManagement: 0,
+        assignedTo: 'Sloan',
+        areRequirementsCompleted: false,
+        isDesigningCompleted: false,
+        isCodingCompleted: false,
+        isTestingCompleted: false,
+        isManagementCompleted: false,
+        teamList: ['Sloan'],
+        requirementsList: ['R1', 'R2']
+      };
+    });
+    it('Should get reqs time remaining', () => {
+      const value = component.getRequirementsTimeRemaining(mockTask);
+      expect(value).toEqual(10);
+    });
+
+    it('Should get designing time remaining', () => {
+      const value = component.getDesigningTimeRemaining(mockTask);
+      expect(value).toEqual(10);
+    });
+
+    it('Should get coding time remaining', () => {
+      const value = component.getCodingTimeRemaining(mockTask);
+      expect(value).toEqual(10);
+    });
+
+    it('Should get testing time remaining', () => {
+      const value = component.getTestingTimeRemaining(mockTask);
+      expect(value).toEqual(10);
+    });
+
+    it('Should get management time remaining', () => {
+      const value = component.getManagementTimeRemaining(mockTask);
+      expect(value).toEqual(10);
+    });
+  });
+
+  describe('Overdue tasks', () => {
+    beforeEach(() => {
+      mockTask = {
+        name: 'T1',
+        description: 'Task Description',
+        requirement: 'R1',
+        estReqs: 10,
+        loggedReqs: 11,
+        estDesign: 10,
+        loggedDesign: 11,
+        estCode: 10,
+        loggedCode: 11,
+        estTest: 10,
+        loggedTest: 11,
+        estManagement: 10,
+        loggedManagement: 11,
+        assignedTo: 'Sloan',
+        areRequirementsCompleted: false,
+        isDesigningCompleted: false,
+        isCodingCompleted: false,
+        isTestingCompleted: false,
+        isManagementCompleted: false,
+        teamList: ['Sloan'],
+        requirementsList: ['R1', 'R2']
+      };
+    });
+
+    it('Should get reqs overdue time', () => {
+      const value = component.getRequirementsTimeRemaining(mockTask);
+      expect(value).toEqual('Overdue by 1');
+    });
+
+    it('Should get designing overdue time', () => {
+      const value = component.getDesigningTimeRemaining(mockTask);
+      expect(value).toEqual('Overdue by 1');
+    });
+
+    it('Should get coding overdue time', () => {
+      const value = component.getCodingTimeRemaining(mockTask);
+      expect(value).toEqual('Overdue by 1');
+    });
+
+    it('Should get testing overdue time', () => {
+      const value = component.getTestingTimeRemaining(mockTask);
+      expect(value).toEqual('Overdue by 1');
+    });
+
+    it('Should get management overdue time', () => {
+      const value = component.getManagementTimeRemaining(mockTask);
+      expect(value).toEqual('Overdue by 1');
+    });
   });
 });

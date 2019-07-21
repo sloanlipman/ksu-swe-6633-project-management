@@ -61,7 +61,6 @@ export class AddTaskDialog {
     public dialogRef: MatDialogRef<AddTaskDialog>,
     @Inject(MAT_DIALOG_DATA) public data: TaskData,
     private formBuilder: FormBuilder) {
-      console.log('Received data', data);
       this.loadData(data);
     }
 
@@ -119,7 +118,6 @@ export class UpdateProjectPage extends AppComponent implements OnInit {
 
   loadProject(): void {
     this.db.get(this.currentProjectName).then((doc) => {
-      console.log(doc);
       doc.tasks.forEach(task => {
         this.tasksList.push(task);
       });
