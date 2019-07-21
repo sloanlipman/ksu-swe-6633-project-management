@@ -1,17 +1,13 @@
-mat-grid-tile {
-  overflow: scroll;
-}
-
 .tile {
   margin-bottom: 20px;
 }
 
 #information {
-  background: #194ec5;
+  background: #317937;
 }
 
 #employee-list {
-  background: #e0992f;
+  background: #317937;
 }
 
 #project-manager {
@@ -23,7 +19,7 @@ mat-grid-tile {
 #team-select {
   margin-top: 30px;
   width: 140px;
-  background-color: #e0992f;
+  background-color: #317937;
   outline: 2px solid black;
 }
 
@@ -32,11 +28,11 @@ mat-selection-list {
 }
 
 #risks-list {
-  background: purple;
+  background: #317937;
 }
 
 #requirements-list {
-  background: #3e3c3c
+  background: #317937
 }
 
 
@@ -52,18 +48,12 @@ mat-selection-list {
   padding-top: 30px;
 }
 
-.add {
-  background: green;
-  margin-bottom: 5px;
-}
-
-
 .edit {
   background: blue;
 }
 
 .delete {
-  background: red;
+  background: #d20b0b;
 }
 
 .inner-buttons {
@@ -96,7 +86,7 @@ mat-list {
 }
 
 .project-name {
-  background:  #194ec5;
+  background:  #317937;
   border: none;
   font-size: 1.2rem;
   color: white;

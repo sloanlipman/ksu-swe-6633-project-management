@@ -38,6 +38,9 @@ export class HomePage extends AppComponent implements OnInit {
   selectedProject: any;
   currentProjectName: string;
   projects: any[];
+  requirementsList: string[] = [];
+  riskList: string[] = [];
+  taskList: any[] = [];
   db: any;
   dialogRef: MatDialogRef<NewProjectDialog>;
 
@@ -59,10 +62,53 @@ export class HomePage extends AppComponent implements OnInit {
 
   getProjects() {
     this.db.get('projects').then((doc) => {
+      if (doc.projects.length === 0) {
+        this.currentProject = new Project({
+          id: null,
+          description: null,
+          projectManager: null,
+          teamMembers: [],
+          requirements: [],
+          risks: [],
+          tasks: []
+        });
+      } else {
       this.projects = doc.projects;
       console.log(this.projects);
       this.currentProjectForm.setValue(this.projects[0]);
-      // Get project details as well
+      this.changeProject(this.projects[0]);
+    }
+    }).catch(err => console.log(err));
+  }
+
+  changeProject(selectedProject) {
+    this.currentProjectName = selectedProject;
+
+    this.db.get(this.currentProjectName).then((doc) => {
+      this.currentProject = new Project({
+        id: doc.id,
+        description: doc.description,
+        projectManager: doc.projectManager,
+        teamMembers: doc.teamMembers,
+        requirements: doc.requirements,
+        risks: doc.risks,
+        tasks: doc.tasks
+      });
+
+      doc.requirements.forEach(req => {
+        this.requirementsList.push(req.name);
+      });
+
+      doc.risks.forEach(risk => {
+        this.riskList.push(risk.name);
+      });
+
+      doc.tasks.forEach(task => {
+        this.taskList.push(task);
+      });
+
+      console.log(doc.tasks);
+
     }).catch(err => console.log(err));
   }
 
@@ -143,4 +189,45 @@ export class HomePage extends AppComponent implements OnInit {
     }
     }).catch(err => console.log(err));
   }
+
+  getRequirementsTimeRemaining(task) {
+    if (task.estReqs >= task.loggedReqs) {
+      return (task.estReqs - task.loggedReqs);
+    } else {
+      return ('Overdue by ' + (task.estReqs - task.loggedReqs) * -1);
+    }
+  }
+
+  getDesigningTimeRemaining(task) {
+    if (task.estDesign >= task.loggedDesign) {
+      return (task.estDesign - task.loggedDesign);
+    } else {
+      return ('Overdue by ' + (task.estDesign - task.loggedDesign) * -1);
+    }
+  }
+
+  getCodingTimeRemaining(task) {
+    if (task.estCode >= task.loggedCode) {
+      return (task.estCode - task.loggedCode);
+    } else {
+      return ('Overdue by ' + (task.estCode - task.loggedCode) * -1);
+    }
+  }
+
+  getTestingTimeRemaining(task) {
+    if (task.estTest >= task.loggedTest) {
+      return (task.estTest - task.loggedTest);
+    } else {
+      return ('Overdue by ' + (task.estTest - task.loggedTest) * -1);
+    }
+  }
+
+  getManagementTimeRemaining(task) {
+    if (task.estManagement >= task.loggedManagement) {
+      return (task.estManagement - task.loggedManagement);
+    } else {
+      return ('Overdue by ' + (task.estManagement - task.loggedManagement) * -1);
+    }
+  }
+
 }
