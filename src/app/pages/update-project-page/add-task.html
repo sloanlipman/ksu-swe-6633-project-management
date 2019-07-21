@@ -2,8 +2,11 @@
 <div mat-dialog-content>
   <mat-form [formGroup]="taskForm">
     <mat-form-field>
-      <input matInput formControlName="name" placeholder="Name" required>
+      <textarea matInput id="name" formControlName="name" placeholder="Name" required maxlength="50"></textarea>
     </mat-form-field>
+    <mat-form-field>
+      <textarea formControlName="description" id="description" matInput placeholder=" Description" required maxlength="100"></textarea>
+  </mat-form-field><br/>
     <mat-form-field>
       <mat-label>Associated Requirement</mat-label>
       <mat-select required formControlName="requirement">
@@ -19,9 +22,7 @@
         </mat-select>
     </mat-form-field>
     <br/>
-    <mat-form-field>
-        <textarea style="height:200px;" formControlName="description" matInput placeholder=" Description" required></textarea>
-    </mat-form-field>
+
 
     <div>
       <mat-label class="category">Requirements Analysis</mat-label>

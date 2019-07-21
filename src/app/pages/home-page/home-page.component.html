@@ -19,22 +19,30 @@
           </div>
     <mat-grid-tile-header>Project: {{currentProjectName}}</mat-grid-tile-header> <!--Use *ngFor to show lists of projects, dynamically put their names in-->
     <div class="gridBody">
-      <h2 class="project-item">Description:
+      <h3 class="project-item">Description:
         <div class="inner">{{ currentProject.description }}</div>
-      </h2>
-      <h2 class="project-item"> Manager: 
+      </h3>
+      <h3 class="project-item"> Manager: 
         <div class="inner">{{ currentProject.projectManager }}</div>
-      </h2>
-      <h2 class="project-item"> Team:
+      </h3>
+      <h3 class="project-item"> Team:
         <div class="inner" *ngFor="let employee of currentProject.teamMembers">{{ employee }}</div>
-      </h2>
-      <h2 class="project-item">Requirements:
-        <div class="inner"  *ngFor="let req of requirementsList">{{ req }}</div> 
-      </h2>
-      <h2 class="project-item">Risks:
-        <div class="inner" *ngFor="let risk of riskList">{{ risk }}</div>
-      </h2>
-      <h2 class="project-item" *ngFor = "let task of taskList; index as i">Task #{{i+1}}
+      </h3>
+      <h2 class="header">REQUIREMENTS</h2>
+      <h3 class="project-item" *ngFor = "let req of requirementsList; index as i">Requirement #{{i+1}}
+          <div class="inner">Name: {{ req.name }}</div>
+          <div class="inner">Description: {{ req.description }}</div>
+          <div class="inner">Priority: {{ req.priority }} </div>
+          <div class="inner">Category: {{ req.category}} </div>
+      </h3>
+      <h2 class="header">RISKS</h2>
+      <h3 class="project-item" *ngFor = "let risk of riskList; index as i">Risk #{{i+1}}
+          <div class="inner">Name: {{ risk.name }}</div>
+          <div class="inner">Description: {{ risk.description }}</div>
+          <div class="inner">Likelihood: {{ risk.likelihood}}% </div>
+      </h3>
+      <h2 class="header">TASKS</h2>
+      <h3 class="project-item" *ngFor = "let task of taskList; index as i">Task #{{i+1}}
         <div class="inner">Name: {{ task.name }}</div>
         <div class="inner">Description: {{ task.description }}</div>
         <div class="inner">Associated Requirement: {{ task.requirement}} </div>
@@ -58,8 +66,7 @@
           <div class="inner" *ngIf="task.isManagementCompleted">Project Management is done!</div>
           <div class="inner" *ngIf="!task.isManagementCompleted">Estimated Time Remaining for Project Management: 
             {{getManagementTimeRemaining(task)}}</div>
-     </h2>
-      
+      </h3>
     </div>
    </mat-grid-tile>
     <mat-grid-tile class="dummy" colspan="1" rowspan="1.5"></mat-grid-tile>

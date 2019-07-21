@@ -138,8 +138,11 @@ describe('EditProjectPage', () => {
       tasks: ['task 1']
     });
     expect(component.saveProject).toHaveBeenCalledWith(expectedCall);
-
   });
 
+  it('Should trigger a save during a manual save', () => {
+    component.manualSave('Description');
+    expect(saveSpy).toHaveBeenCalled();
+  });
 
 });

@@ -2,10 +2,10 @@
   <button mat-raised-button class="add" (click)="addTask()">Add New Task</button>
 </div>
 <br/><br/>
-<mat-grid-list cols="6" rowHeight="25rem" [gutterSize]="'15px'">
+<mat-grid-list cols="6" rowHeight="1:1.25" [gutterSize]="'25px'">
 
   <mat-grid-tile class="task" colspan="1" rowspan="1.5" *ngFor="let task of tasksList">
-    <mat-grid-tile-header>Task name:{{task.name}}</mat-grid-tile-header><br/><br/>
+    <mat-grid-tile-header>Task name: {{task.name}}</mat-grid-tile-header><br/><br/>
     <div class="button-container">
         <button mat-raised-button class="edit" (click)="editTask(task)">Edit Task</button>
         <button mat-raised-button class="delete" (click)="deleteTask(task)">Delete Task</button>

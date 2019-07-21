@@ -37,7 +37,8 @@ export class HomePage extends AppComponent implements OnInit {
   currentProjectForm: FormControl;
   selectedProject: any;
   currentProjectName: string;
-  projects: any[];
+  projects: any[] = [];
+  employeesList: string[] = [];
   requirementsList: string[] = [];
   riskList: string[] = [];
   taskList: any[] = [];
@@ -52,26 +53,32 @@ export class HomePage extends AppComponent implements OnInit {
     protected snackBar: MatSnackBar
   ) {
     super(injector, router, snackBar, dialog);
+    this.currentProject = new Project({
+      id: null,
+      description: null,
+      projectManager: null,
+      teamMembers: [],
+      requirements: [],
+      risks: [],
+      tasks: []
+    });
   }
 
   ngOnInit() {
     this.currentProjectForm = new FormControl();
     this.initializeDatabase();
+    this.getEmployeeList();
     this.getProjects();
 }
 
   getProjects() {
-    this.db.get('projects').then((doc) => {
+    this.db.get('projects').catch(err => {
+      if (err.name === 'not_found') {
+        this.createProject();
+      }
+    }).then((doc) => {
       if (doc.projects.length === 0) {
-        this.currentProject = new Project({
-          id: null,
-          description: null,
-          projectManager: null,
-          teamMembers: [],
-          requirements: [],
-          risks: [],
-          tasks: []
-        });
+        this.createProject();
       } else {
       this.projects = doc.projects;
       console.log(this.projects);
@@ -83,6 +90,9 @@ export class HomePage extends AppComponent implements OnInit {
 
   changeProject(selectedProject) {
     this.currentProjectName = selectedProject;
+    this.requirementsList = [];
+    this.riskList = [];
+    this.taskList = [];
 
     this.db.get(this.currentProjectName).then((doc) => {
       this.currentProject = new Project({
@@ -96,19 +106,16 @@ export class HomePage extends AppComponent implements OnInit {
       });
 
       doc.requirements.forEach(req => {
-        this.requirementsList.push(req.name);
+        this.requirementsList.push(req);
       });
 
       doc.risks.forEach(risk => {
-        this.riskList.push(risk.name);
+        this.riskList.push(risk);
       });
 
       doc.tasks.forEach(task => {
         this.taskList.push(task);
       });
-
-      console.log(doc.tasks);
-
     }).catch(err => console.log(err));
   }
 
@@ -117,7 +124,15 @@ export class HomePage extends AppComponent implements OnInit {
   }
 
   updateProject() {
-    this.navigate('update');
+    if (this.currentProject.requirements.length === 0 || this.currentProject.teamMembers.length === 0) {
+      this.snackBar.open('Your project needs at least one requirement and one team member before you can update the project.', '', {
+        duration: 10000,
+        verticalPosition: 'top',
+      });
+      this.navigate('edit');
+    } else {
+      this.navigate('update');
+    }
   }
 
   navigate(page) {
@@ -139,14 +154,13 @@ export class HomePage extends AppComponent implements OnInit {
 
   createProject() {
     this.dialogRef = this.dialog.open(NewProjectDialog, {
-      width: '400px',
+      width: '360px',
       data: {
         name: undefined,
       }
     });
 
     this.dialogRef.afterClosed().subscribe(result => {
-      console.log('RESULT IS', result);
       const projectName = result.get('projectName').value.replace(/\s+/g, '');
       this.handleProjectSubmission(projectName);
     });
@@ -155,7 +169,6 @@ export class HomePage extends AppComponent implements OnInit {
   handleProjectSubmission(projectName: string) {
     let existingProject = false;
     this.db.get('projects').then((doc) => {
-      console.log('got list of projects', doc);
       doc.projects.forEach(project => {
         if (project === projectName) {
           existingProject = true;
@@ -172,14 +185,16 @@ export class HomePage extends AppComponent implements OnInit {
         risks: [],
         tasks: []
       });
-      this.projects.push(this.currentProject);
+      this.projects.push(this.currentProject.id);
+      this.currentProjectForm.setValue(projectName);
       this.saveProject(this.currentProject);
 
-
       if (this.employeesList.length === 0) {
+        this.snackBar.open('Let\'s add some employees to your database!', '', { // Display error to the user
+          duration: 3000,
+          verticalPosition: 'top',
+        });
         this.router.navigateByUrl('/employees');
-      } else {
-        this.router.navigateByUrl('/edit/' + this.currentProject.id);
       }
     } else {
         this.snackBar.open('Project already exists!', '', { // Display error to the user

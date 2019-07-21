@@ -30,7 +30,6 @@ export class AppComponent implements OnInit {
     }
 
   ngOnInit() {
-    console.log('inside ngoninit');
     this.initializeDatabase();
     this.getEmployeeList();
   }
@@ -40,7 +39,6 @@ export class AppComponent implements OnInit {
   }
 
   initializeDatabase() {
-    console.log('getting database info');
     this.db = new PouchDB('pmonkey');
     this.db.get('projects').catch(err => {
       if (err.name === 'not_found') {
@@ -80,15 +78,12 @@ export class AppComponent implements OnInit {
   }
 
   getEmployeeList(): any {
-    const employees = [];
     this.db.get('employees').then((doc) => {
       doc.employees.forEach(employee => {
         console.log(employee);
-        employees.push(employee);
+        this.employeesList.push(employee);
       });
     }).catch(err => console.log(err));
-    this.employeesList = employees;
-    return employees;
   }
 
   saveProject(p: Project) {

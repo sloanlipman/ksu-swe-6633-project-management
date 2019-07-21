@@ -38,20 +38,12 @@ describe('ManageEmployeesPageComponent', () => {
     });
     ngOnInitSpy = spyOn(component, 'ngOnInit').and.stub();
     spyOn(component['dialog'], 'open').and.callThrough();
+    spyOn(component, 'getEmployeeList').and.stub();
     fixture.detectChanges();
   });
 
   afterEach(() => {
     fixture.destroy();
-  });
-
-  it('Should get a list of employees on init', async () => {
-    spyOn(component.db, 'get').withArgs('employees').and.returnValue(Promise.resolve({
-      employees: ['Jon', 'Bran', 'Tyrion']
-    }));
-    await component.getEmployees();
-    fixture.detectChanges();
-    expect(component.employeesList).toEqual(['Jon', 'Bran', 'Tyrion']);
   });
 
   it('Should delete an employee', async () => {
